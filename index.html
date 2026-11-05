@@ -531,6 +531,43 @@ a.task:hover{border-color:var(--grape);transform:translateY(-2px)}
 .pdfMenu{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 14px;margin:-6px 0 16px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
 .pdfMenu select{height:40px;border-radius:12px;border:2px solid var(--line);background:var(--surface);color:var(--ink);padding:0 10px;font:inherit}
 .pdfMenu .st{font-size:14px;color:var(--muted)}
+
+/* ===== calm palette: neutral surfaces, one accent, subject colour as a quiet tint (no gradients) ===== */
+:root{--bg:#f6f6f9;--surface:#ffffff;--sunk:#efeff4;--ink:#18181f;--muted:#5d5e6e;--line:#e3e3ea;--grape:#5146d8;--code-bg:#1c1b26;
+  --shadow:0 1px 3px rgb(20 20 40 / .06),0 4px 14px -8px rgb(20 20 40 / .12);--shadow-lg:0 10px 28px -14px rgb(20 20 40 / .22)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111116;--surface:#1a1a21;--sunk:#23232c;--ink:#ededf3;--muted:#a3a3b4;--line:#2e2e39;--grape:#8c84ff;--code-bg:#0d0d12}}
+:root[data-theme="dark"]{--bg:#111116;--surface:#1a1a21;--sunk:#23232c;--ink:#ededf3;--muted:#a3a3b4;--line:#2e2e39;--grape:#8c84ff;--code-bg:#0d0d12}
+body::after{display:none}
+.logo{background:var(--grape);box-shadow:none}
+.readbar{background:var(--grape)}
+.hero{background:#5146d8;box-shadow:var(--shadow)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero{background:#2f2a7a}}
+:root[data-theme="dark"] .hero{background:#2f2a7a}
+.hero .blob{background:rgb(255 255 255 / .06)}
+.subjHead{background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);border-top:4px solid var(--c1)}
+.subjHead .blob{display:none}
+.subjHead .badge{background:color-mix(in srgb,var(--c1) 14%,var(--surface));color:var(--c1)}
+.subjHead p,.subjHead .muted{color:var(--muted)}
+.subj::before{height:3px;background:var(--c1)}
+.badge{background:color-mix(in srgb,var(--c1) 13%,var(--surface));color:var(--c1);box-shadow:none}
+.bar i,.qbar .meter i,.brow .bar i{background:var(--c1)}
+.examBar .meter i,.lrnProg .meter i{background:var(--grape)}
+a.chap:hover .num{background:var(--c1)}
+.tabs .ind{background:var(--c1)}
+.step.next{background:var(--c1)}
+.doc > h1:first-child{background:none;-webkit-text-fill-color:currentColor;color:var(--ink)}
+.doc h2::before{background:color-mix(in srgb,var(--c1) 14%,var(--surface));color:var(--c1);box-shadow:none}
+.doc th{background:color-mix(in srgb,var(--c1) 8%,var(--surface))}
+.fab{background:var(--grape)}
+.result .big{background:none;-webkit-text-fill-color:currentColor;color:var(--c1)}
+.result button{background:var(--c1)}
+.streak{background:var(--sunk)}
+.btn.pri{background:var(--grape)}
+.fchip[aria-pressed="true"]{background:var(--c1)}
+.face.front{background:var(--c1)}
+.mtile .mi{background:color-mix(in srgb,var(--c1) 13%,var(--surface));color:var(--c1)}
+.lrnCard .tag{background:var(--grape)}
+.lrnCard .ask{background:var(--sunk);border-color:var(--line)}
 </style>
 
 <header class="top"><div class="wrap">
