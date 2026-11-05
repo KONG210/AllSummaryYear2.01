@@ -1,0 +1,338 @@
+{
+ "web": [
+  [
+   "Node.js",
+   "Asynchronous JavaScript runtime บน V8 engine ให้ JS รันฝั่ง server ได้ (ไม่มี DOM/window)"
+  ],
+  [
+   "Single thread event loop",
+   "thread เดียวรับ request แล้วส่งงานไปทำ รับ request ถัดไปเลยโดยไม่รอ (non-blocking)"
+  ],
+  [
+   "module.exports / require",
+   "export ค่าออกจาก module / โหลด module ด้วย relative path เช่น require('./hello')"
+  ],
+  [
+   "__dirname vs __filename",
+   "path ของโฟลเดอร์ที่ไฟล์อยู่ / path เต็มรวมชื่อไฟล์"
+  ],
+  [
+   "Callback hell",
+   "callback ซ้อนกันเป็นขั้นบันได อ่านยาก แก้ด้วย Promise หรือ async/await"
+  ],
+  [
+   "Express",
+   "minimal, flexible web framework ของ Node ช่วยเรื่อง routing, API, template engine"
+  ],
+  [
+   "Middleware",
+   "function ที่เข้าถึง req, res (และ next) เช่น express.json(), cookie-parser"
+  ],
+  [
+   "req.query / req.body / req.params",
+   "?a=b (GET) / ข้อมูลใน body (POST ต้องมี urlencoded/json) / /:id ใน path"
+  ],
+  [
+   "express.static",
+   "เสิร์ฟไฟล์ CSS/รูป/JS จากโฟลเดอร์ เช่น public แล้วอ้างด้วย /mystyle.css"
+  ],
+  [
+   "Cookie vs Session",
+   "cookie เก็บที่ client (res.cookie) / session เก็บที่ server (req.session)"
+  ],
+  [
+   "dotenv",
+   "โหลดค่าจาก .env เข้า process.env ต้องเรียก dotenv.config() ก่อนใช้"
+  ],
+  [
+   "REST constraints",
+   "Client/Server, Stateless, Cacheable, Uniform Interface, Layered System, Code-On-Demand (optional)"
+  ],
+  [
+   "PUT vs POST",
+   "PUT idempotent, client กำหนด URI / POST ไม่ idempotent, server กำหนด URI"
+  ],
+  [
+   "JSON.stringify / JSON.parse",
+   "object → JSON string (serialise) / JSON string → object (deserialise)"
+  ],
+  [
+   "CORS",
+   "กลไกอนุญาตให้เรียก resource ข้าม origin (ต่าง domain, subdomain, port, protocol) เปิดด้วย app.use(cors())"
+  ],
+  [
+   "JWT",
+   "Header.Payload.Signature (RFC 7519) สร้างด้วย jwt.sign ตรวจด้วย jwt.verify ส่งใน Authorization: Bearer"
+  ],
+  [
+   "Registered claims",
+   "iss (issuer), exp (expiration), sub (subject), aud (audience), iat (issued at)"
+  ],
+  [
+   "Axios",
+   "library HTTP ใช้ได้ทั้ง browser และ Node แปลง JSON อัตโนมัติ ข้อมูลอยู่ใน res.data"
+  ]
+ ],
+ "net": [
+  [
+   "Forwarding vs Routing",
+   "ย้าย packet จาก input ไป output ใน router (data plane) / หาเส้นทางทั้งหมด (control plane)"
+  ],
+  [
+   "Best effort",
+   "Internet ไม่รับประกัน bandwidth, loss, order, timing"
+  ],
+  [
+   "CIDR",
+   "a.b.c.d/x โดย x = จำนวน bit ของ subnet part แบ่งวงได้อิสระไม่ยึด class"
+  ],
+  [
+   "สูตร subnet",
+   "IP ทั้งหมด = 2^(32−prefix), ใช้ได้ = ทั้งหมด − 2, mask = 256 − block"
+  ],
+  [
+   "VLSM",
+   "แบ่งวงขนาดต่างกันตามความต้องการ เรียงจากวงใหญ่ไปเล็ก"
+  ],
+  [
+   "Fragment offset",
+   "นับเป็นหน่วย 8 bytes = byte เริ่มต้น / 8 · MF = 1 ยกเว้นชิ้นสุดท้าย"
+  ],
+  [
+   "TTL vs Protocol field",
+   "TTL ลด 1 ต่อ router กัน loop / Protocol บอก layer 4 (ICMP 1, TCP 6, UDP 17)"
+  ],
+  [
+   "Private IP",
+   "10/8, 172.16/12, 192.168/16 (RFC 1918)"
+  ],
+  [
+   "DHCP",
+   "Discover → Offer → Request → ACK · client port 68, server port 67, broadcast"
+  ],
+  [
+   "NAT",
+   "แปลง (private IP, port) ↔ (NAT IP, new port) ด้วย translation table"
+  ],
+  [
+   "IPv6 ตัดอะไรออก",
+   "checksum, fragmentation/reassembly, options (header คงที่ 40 bytes)"
+  ],
+  [
+   "Tunneling",
+   "ห่อ IPv6 datagram เป็น payload ใน IPv4 datagram"
+  ],
+  [
+   "OSPF",
+   "intra-AS, link-state, flood LSA บน IP, ใช้ Dijkstra, hierarchical area/backbone"
+  ],
+  [
+   "BGP",
+   "inter-AS, path vector, eBGP/iBGP, TCP, attribute AS-PATH และ NEXT-HOP"
+  ],
+  [
+   "Hot potato routing",
+   "เลือก gateway ที่ intra-domain cost ต่ำสุด ไม่สน inter-domain cost"
+  ],
+  [
+   "SDN",
+   "แยก control plane ไปที่ remote controller, northbound API ↔ apps, southbound API (OpenFlow) ↔ switch"
+  ],
+  [
+   "ICMP type 11 / 3-3",
+   "TTL expired (ระหว่างทาง traceroute) / port unreachable (ถึงปลายทาง)"
+  ],
+  [
+   "UDP vs TCP demux",
+   "UDP ใช้ dest port อย่างเดียว / TCP ใช้ 4-tuple"
+  ],
+  [
+   "EstimatedRTT",
+   "(1−0.125)×EstRTT + 0.125×SampleRTT · Timeout = EstRTT + 4×DevRTT"
+  ],
+  [
+   "3-way handshake",
+   "SYN(seq=x) → SYNACK(seq=y, ack=x+1) → ACK(ack=y+1)"
+  ],
+  [
+   "Reno: 3 dup ACK / timeout",
+   "ssthresh = cwnd/2, cwnd = ssthresh+3 / ssthresh = cwnd/2, cwnd = 1"
+  ],
+  [
+   "Flow vs Congestion control",
+   "rwnd: ผู้รับคนเดียวรับไม่ทัน / cwnd: เครือข่ายแออัด"
+  ],
+  [
+   "5G NSA vs SA",
+   "NSA = 5G RAN + LTE ใช้ EPC (core 4G) ร่วม · SA = 5G RAN แยก + 5G core ใหม่"
+  ],
+  [
+   "NEA / NIA",
+   "NEA = encryption (confidentiality กัน eavesdropping) · NIA = integrity (กัน tampering, UP optional)"
+  ],
+  [
+   "เลข 0/1/2/3 ของ NEA/NIA",
+   "0 = null · 1 = SNOW 3G · 2 = AES · 3 = ZUC · key 128 bit · MAC 32 bit"
+  ],
+  [
+   "GEO / MEO / LEO",
+   "GEO 35,785.5 km · MEO 2,000–20,350 km · LEO 300–2,000 km"
+  ],
+  [
+   "NTN",
+   "Non-Terrestrial Network = รวม 5G กับดาวเทียม (3GPP) · bent-pipe = non-regenerative, on-board RAN = regenerative"
+  ],
+  [
+   "Steganography vs Cryptography",
+   "Stegano = ซ่อนให้มองไม่เห็น (โกนหัวทาส) · Crypto = แปลงเป็น cipher text (Enigma)"
+  ],
+  [
+   "QKD",
+   "แลกกุญแจด้วย photon · วัดแล้ว state เปลี่ยน → รู้ว่าถูกดักฟัง · quantum channel + classical channel"
+  ],
+  [
+   "PQC",
+   "เข้ารหัสทน quantum: lattice-based, code-based (แทน RSA/ECC ที่ Shor's algorithm ถอดได้)"
+  ],
+  [
+   "Ambient IoT",
+   "IoT พลังงานต่ำ ~1 µW (Rel-19) · เทียบ BLE 1 mW, Wi-Fi 50 mW, 5G IoT 200 mW"
+  ],
+  [
+   "4 หลัก quantum",
+   "Superposition · Entanglement · Interference · Decoherence"
+  ]
+ ],
+ "se": [
+  [
+   "Architectural vs Detailed design",
+   "ส่วนหลัก หน้าที่ interface ความสัมพันธ์ / ภายใน component: class, algorithm, data structure"
+  ],
+  [
+   "Pipe and Filter",
+   "ข้อมูลผ่าน filter ต่อกันด้วย pipe · reuse ได้ แต่ไม่เหมาะ interactive"
+  ],
+  [
+   "Cohesion",
+   "ความเกี่ยวข้องภายใน module ต้องการสูง (ดีสุด functional, แย่สุด coincidental)"
+  ],
+  [
+   "Coupling",
+   "การพึ่งพาระหว่าง module ต้องการต่ำ (ดีสุด data, แย่สุด content)"
+  ],
+  [
+   "Basic design principles",
+   "Feasibility, Adequacy, Economy, Changeability"
+  ],
+  [
+   "Aesthetic principles",
+   "Beauty, Symmetry, Balance (ไม่มี God class), Proportion"
+  ],
+  [
+   "Fagan inspection",
+   "Planning → Overview → Preparation → Inspection (หา defect) → Rework (author) → Follow-up"
+  ],
+  [
+   "Refactoring",
+   "ปรับโครงสร้างภายในโดยไม่เปลี่ยนพฤติกรรมภายนอก (Fowler)"
+  ],
+  [
+   "Debugging 4 phases",
+   "Stabilization → Localization → Correction → Verification"
+  ],
+  [
+   "Configuration item",
+   "อะไรก็ได้ที่เปลี่ยนได้และต้องติดตาม: โค้ด เอกสาร เวอร์ชัน compiler ฮาร์ดแวร์"
+  ],
+  [
+   "git add / commit / push / pull",
+   "→ staging / → local repo / → remote / remote → local (fetch + merge)"
+  ],
+  [
+   "Hotfix branch",
+   "แตกจาก tag บน master แก้ bug วิกฤตใน production แล้ว merge กลับ master และ develop"
+  ],
+  [
+   "QA vs QC",
+   "ทุกกิจกรรมปรับคุณภาพ process + product / ตรวจคุณภาพ product หา fault"
+  ],
+  [
+   "Verification vs Validation",
+   "building the software right? / building the right software?"
+  ],
+  [
+   "Fault → Error → Failure",
+   "ข้อบกพร่องในโค้ด → สถานะภายในผิด → พฤติกรรมภายนอกผิด"
+  ],
+  [
+   "ECP / BVA",
+   "แบ่ง class เลือกตัวแทน / ทดสอบที่ขอบ (−1, ขอบ, +1)"
+  ],
+  [
+   "Independent paths",
+   "จำนวน decision + 1 (cyclomatic number)"
+  ],
+  [
+   "Regression testing",
+   "ทดสอบว่าการแก้ใหม่ไม่ทำให้ของเดิมพัง"
+  ]
+ ],
+ "arch": [
+  [
+   "SISD / SIMD / MISD / MIMD",
+   "Pentium 4 / SSE ของ x86 / ไม่มีตัวอย่าง / Xeon e5345 (multicore)"
+  ],
+  [
+   "SPMD",
+   "โปรแกรมเดียวบน MIMD ใช้ conditional code ให้แต่ละโปรเซสเซอร์ทำต่างกัน"
+  ],
+  [
+   "ความยากของ parallel",
+   "Partitioning, Coordination, Communications overhead"
+  ],
+  [
+   "Vector vs Multimedia ext.",
+   "vector: ความกว้างแปรผัน + strided access / MMX, SSE: กว้างคงที่ ไม่มี strided"
+  ],
+  [
+   "Fine / Coarse / SMT",
+   "สลับทุก cycle / สลับเมื่อ stall นาน / หลาย thread ใน cycle เดียว (Pentium-4 HT)"
+  ],
+  [
+   "UMA vs NUMA",
+   "เวลาเข้าถึงหน่วยความจำเท่ากัน / ไม่เท่ากัน (ทั้งคู่เป็น shared memory)"
+  ],
+  [
+   "Message passing",
+   "แต่ละโปรเซสเซอร์มี address space ของตัวเอง ส่ง/รับ message (cluster, grid)"
+  ],
+  [
+   "GPU vs multicore",
+   "GPU: multithread สูงมาก, cache เล็ก, ไม่มี demand paging, ไม่ cache coherent"
+  ],
+  [
+   "Arithmetic intensity",
+   "FLOPs ต่อ byte ของหน่วยความจำที่เข้าถึง"
+  ],
+  [
+   "fork() คืนค่า",
+   "< 0 ล้มเหลว / 0 = child / > 0 = parent (PID ของ child)"
+  ],
+  [
+   "systemctl reload vs restart",
+   "อ่าน config ใหม่ไม่หยุดบริการ / หยุดแล้วเริ่มใหม่"
+  ],
+  [
+   "a2enconf",
+   "เปิดใช้ config ใน conf-available (เช่น phpmyadmin) แล้ว reload apache2"
+  ],
+  [
+   "cron fields",
+   "นาที ชั่วโมง วันที่ เดือน วันในสัปดาห์ · */5 * * * * = ทุก 5 นาที"
+  ],
+  [
+   "wtmp / syslog / auth.log",
+   "ประวัติ login (last) / log ระบบทั่วไป / การยืนยันตัวตน sudo, ssh"
+  ]
+ ]
+}

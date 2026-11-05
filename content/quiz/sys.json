@@ -1,0 +1,22 @@
+{
+"sys-10":[
+{"q":"ใน bash ตัวแปรใดเก็บจำนวน argument ที่ส่งให้ script","c":["$0","$#","$@","$?"],"a":1,"why":["$0 คือชื่อ script","ถูกต้อง: $# = จำนวน argument","$@ คือ argument ทั้งหมด","$? คือ exit status ของคำสั่งล่าสุด"]},
+{"q":"บรรทัดใดกำหนดค่าตัวแปรใน bash ได้ถูกต้อง","c":["name = \"ICT\"","name=\"ICT\"","$name=\"ICT\"","set name \"ICT\""],"a":1,"why":["มีช่องว่างรอบ = bash จะมองว่าเป็นคำสั่ง name","ถูกต้อง: ห้ามมีช่องว่างรอบ = และไม่ใส่ $ ตอนกำหนดค่า","ใส่ $ ตอนอ่านค่าเท่านั้น","ไม่ใช่วิธีกำหนดตัวแปรใน bash"]},
+{"q":"เงื่อนไขใดตรวจว่า a มากกว่าหรือเท่ากับ 18","c":["[ $a > 18 ]","[ $a -ge 18 ]","[ $a -gt 18 ]","[ $a => 18 ]"],"a":1,"why":["> ใน [ ] คือ redirect ไม่ใช่เปรียบเทียบตัวเลข","ถูกต้อง: -ge = greater than or equal","-gt คือมากกว่าอย่างเดียว ไม่รวมเท่ากับ","ไม่มีตัวดำเนินการนี้"]}
+],
+"sys-11":[
+{"q":"fork() คืนค่า 0 หมายความว่าอะไร","c":["fork ล้มเหลว","โค้ดกำลังรันใน child process","โค้ดกำลังรันใน parent","ไม่มี process ใหม่"],"a":1,"why":["ล้มเหลวคืนค่าน้อยกว่า 0","ถูกต้อง: ใน child fork คืน 0","ใน parent fork คืนค่า PID ของ child (> 0)","ถ้าคืน 0 แปลว่ามี child แล้ว"]},
+{"q":"เรียก fork() 3 ครั้งติดกันโดยไม่มีเงื่อนไข จะมีทั้งหมดกี่ process","c":["3","4","6","8"],"a":3,"why":["ทุก process ที่มีอยู่ fork ต่อด้วย ไม่ใช่บวกทีละ 1","นั่นคือ fork 2 ครั้ง","ไม่ใช่รูปแบบที่ถูก","ถูกต้อง: แต่ละครั้งจำนวน process ×2 → 2³ = 8"]},
+{"q":"compile โปรแกรมที่ใช้ pthread ต้องเพิ่ม option ใด","c":["-lm","-lpthread","-o pthread","-thread"],"a":1,"why":["-lm ลิงก์ math library","ถูกต้อง: ต้องลิงก์ pthread library ด้วย -lpthread","-o ใช้ตั้งชื่อไฟล์ output","ไม่ใช่ option ของ gcc สำหรับเรื่องนี้"]}
+],
+"sys-12":[
+{"q":"ไฟล์ config หลักของ Apache บน Ubuntu คือ","c":["/var/www/html/index.html","/etc/apache2/apache2.conf","/etc/apache2/sites-enabled","/etc/phpmyadmin/apache.conf"],"a":1,"why":["นี่คือหน้าเว็บเริ่มต้นใน document root","ถูกต้อง: /etc/apache2/apache2.conf เป็น global configuration file","เป็นโฟลเดอร์ของ virtual host ที่เปิดใช้","เป็น config ของ phpMyAdmin ที่ copy ไปไว้ใน conf-available"]},
+{"q":"ต้องการให้ Apache อ่าน config ใหม่โดยไม่หยุดให้บริการ ใช้คำสั่งใด","c":["sudo systemctl stop apache2","sudo systemctl reload apache2","sudo systemctl disable apache2","sudo systemctl restart apache2"],"a":1,"why":["stop หยุด service เข้าเว็บไม่ได้","ถูกต้อง: reload อ่าน config ใหม่โดยไม่หยุด","disable ทำให้ไม่เริ่มอัตโนมัติตอน boot","restart หยุดแล้วเริ่มใหม่ connection หลุดชั่วคราว"]},
+{"q":"หลัง copy config ของ phpMyAdmin ไป conf-available ต้องใช้คำสั่งใดเปิดใช้งาน","c":["a2enmod phpmyadmin","a2enconf phpmyadmin","apt install phpmyadmin","mysql -u phpmyadmin -p"],"a":1,"why":["a2enmod ใช้เปิด module ไม่ใช่ config","ถูกต้อง: a2enconf เปิด config แล้วตามด้วย systemctl reload apache2","ติดตั้งไปแล้วก่อนหน้านี้","เป็นการ login MySQL"]}
+],
+"sys-13":[
+{"q":"process init (systemd) มี PID เท่าไร","c":["0","1","100","ขึ้นกับเครื่อง"],"a":1,"why":["PID 0 ไม่ใช่ init","ถูกต้อง: init/systemd เป็น process แรกที่ kernel สร้าง PID = 1","ไม่ใช่","init มี PID 1 เสมอ"]},
+{"q":"cron entry \"*/5 * * * * /home/user/backup.sh\" หมายถึงอะไร","c":["รันทุก 5 ชั่วโมง","รันทุก 5 นาที","รันวันที่ 5 ของเดือน","รันวันศุกร์"],"a":1,"why":["ช่องแรกคือนาที ไม่ใช่ชั่วโมง","ถูกต้อง: ช่องแรก (minute) เป็น */5 = ทุก 5 นาที","วันที่อยู่ช่องที่ 3","วันในสัปดาห์อยู่ช่องที่ 5"]},
+{"q":"log ใดเก็บประวัติการใช้ sudo และการ login ผ่าน ssh","c":["/var/log/wtmp","/var/log/syslog","/var/log/auth.log","~/.bashrc"],"a":2,"why":["wtmp เก็บประวัติ login/logout/reboot (ดูด้วย last)","syslog เก็บ log ระบบทั่วไป","ถูกต้อง: auth.log เก็บการยืนยันตัวตน เช่น sudo และ ssh","bashrc เป็นไฟล์ตั้งค่า shell ไม่ใช่ log"]}
+]
+}

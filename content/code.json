@@ -1,0 +1,635 @@
+[
+ {
+  "id": "http-route",
+  "ch": "web-09",
+  "title": "HTTP server + routing ด้วย module http",
+  "level": "พื้นฐาน",
+  "prompt": "เขียน server ด้วย module `http` (ห้ามใช้ Express) ที่ port **8081**\n\n- `GET /bbq` → อ่านไฟล์ `./bbq.html` ด้วย `fs.readFile` แล้วส่งกลับเป็น `text/html` status 200\n- path อื่นทั้งหมด → status **404**, `Content-Type: text/plain`, ข้อความ `Invalid requested :(`\n- ตอน server เริ่มทำงานให้ log `Listening on 8081`",
+  "starter": "const http = require(\"http\");\nconst fs = require(\"fs\");\n\n// เขียนต่อจากตรงนี้",
+  "hints": [
+   "ใช้ `http.createServer((req, res) => {...})` แล้วเช็ก `req.url`",
+   "ตั้ง status ด้วย `res.statusCode = 200` และ header ด้วย `res.setHeader(\"Content-Type\", \"text/html\")`",
+   "อย่าลืม `res.end()` ไม่งั้น browser จะรอไปเรื่อยๆ และเรียก `server.listen(8081, cb)`"
+  ],
+  "checks": [
+   [
+    "สร้าง server ด้วย http.createServer",
+    "http\\.createServer\\s*\\("
+   ],
+   [
+    "เช็ก req.url กับ /bbq",
+    "req\\.url\\s*===?\\s*['\\\"`]/bbq"
+   ],
+   [
+    "อ่านไฟล์ด้วย fs.readFile",
+    "fs\\.readFile\\s*\\("
+   ],
+   [
+    "ตั้ง Content-Type text/html",
+    "text/html"
+   ],
+   [
+    "มี status 404",
+    "404"
+   ],
+   [
+    "ปิด response ด้วย res.end",
+    "res\\.end\\s*\\("
+   ],
+   [
+    "listen ที่ 8081",
+    "listen\\s*\\(\\s*8081"
+   ]
+  ],
+  "solution": "const http = require(\"http\");\nconst fs = require(\"fs\");\n\nconst server = http.createServer((req, res) => {\n  if (req.url === \"/bbq\") {\n    fs.readFile(\"./bbq.html\", (err, data) => {\n      res.statusCode = 200;\n      res.setHeader(\"Content-Type\", \"text/html\");\n      res.write(data);\n      res.end();\n    });\n  } else {\n    res.statusCode = 404;\n    res.setHeader(\"Content-Type\", \"text/plain\");\n    res.end(\"Invalid requested :(\");\n  }\n});\n\nserver.listen(8081, () => console.log(\"Listening on 8081\"));"
+ },
+ {
+  "id": "module",
+  "ch": "web-09",
+  "title": "export / import module ของตัวเอง",
+  "level": "พื้นฐาน",
+  "prompt": "มี 2 ไฟล์\n\n1. `lib/greet.js` — สร้าง function `sayHello(name)` ที่ return `\"Hello \" + name` แล้ว **export ชื่อ `sayHi`**\n2. `app.js` — import จาก `./lib/greet` แล้ว `console.log` ผลของการเรียก `sayHi(\"DST\")`",
+  "starter": "// ===== lib/greet.js =====\n\n\n// ===== app.js =====",
+  "hints": [
+   "export function ด้วยชื่อใหม่: `module.exports.ชื่อใหม่ = ชื่อฟังก์ชัน`",
+   "import ไฟล์ของตัวเองต้องใช้ relative path ขึ้นต้นด้วย `./`"
+  ],
+  "checks": [
+   [
+    "ประกาศ function sayHello",
+    "function\\s+sayHello|sayHello\\s*=\\s*(\\(|function)"
+   ],
+   [
+    "export เป็นชื่อ sayHi",
+    "module\\.exports\\.sayHi\\s*=\\s*sayHello|exports\\.sayHi\\s*="
+   ],
+   [
+    "require ด้วย relative path ./lib/greet",
+    "require\\s*\\(\\s*['\\\"`]\\./lib/greet"
+   ],
+   [
+    "เรียก .sayHi(",
+    "\\.sayHi\\s*\\("
+   ]
+  ],
+  "solution": "// ===== lib/greet.js =====\nfunction sayHello(name) {\n  return \"Hello \" + name;\n}\nmodule.exports.sayHi = sayHello;\n\n// ===== app.js =====\nconst greet = require(\"./lib/greet\");\nconsole.log(greet.sayHi(\"DST\"));   // Hello DST"
+ },
+ {
+  "id": "url-path",
+  "ch": "web-09",
+  "title": "แยกส่วน URL และ path",
+  "level": "พื้นฐาน",
+  "prompt": "ให้ `const s = \"http://localhost:8080/p/a/t/h?country=TH&time=now\";`\n\nlog ค่าต่อไปนี้ออกมา (ใช้ `URL` และ module `path`)\n\n1. host (ได้ `localhost:8080`)\n2. pathname\n3. ค่าของ query `time`\n4. นามสกุลของไฟล์ `__filename` ด้วย `path.extname`\n5. path เต็มของไฟล์ `public/index.html` ที่อยู่ในโฟลเดอร์เดียวกับไฟล์นี้ ด้วย `path.join`",
+  "starter": "const path = require(\"path\");\nconst s = \"http://localhost:8080/p/a/t/h?country=TH&time=now\";",
+  "hints": [
+   "`const u = new URL(s)` แล้วใช้ `u.host`, `u.pathname`",
+   "query ใช้ `u.searchParams.get(\"time\")`",
+   "`path.join(__dirname, \"public\", \"index.html\")`"
+  ],
+  "checks": [
+   [
+    "สร้าง new URL(s)",
+    "new\\s+URL\\s*\\("
+   ],
+   [
+    "ใช้ .host",
+    "\\.host\\b"
+   ],
+   [
+    "ใช้ .pathname",
+    "\\.pathname"
+   ],
+   [
+    "ใช้ searchParams.get",
+    "searchParams\\.get\\s*\\(\\s*['\\\"`]time"
+   ],
+   [
+    "ใช้ path.extname",
+    "path\\.extname\\s*\\("
+   ],
+   [
+    "ใช้ path.join กับ __dirname",
+    "path\\.join\\s*\\(\\s*__dirname"
+   ]
+  ],
+  "solution": "const path = require(\"path\");\nconst s = \"http://localhost:8080/p/a/t/h?country=TH&time=now\";\nconst u = new URL(s);\n\nconsole.log(u.host);                       // localhost:8080\nconsole.log(u.pathname);                   // /p/a/t/h\nconsole.log(u.searchParams.get(\"time\"));   // now\nconsole.log(path.extname(__filename));     // .js\nconsole.log(path.join(__dirname, \"public\", \"index.html\"));"
+ },
+ {
+  "id": "express-basic",
+  "ch": "web-10",
+  "title": "Express server + Router + static + 404",
+  "level": "สำคัญมาก",
+  "prompt": "เขียน `app.js` ด้วย Express ที่ port **3000**\n\n- ใช้ `express.Router()` แล้ว `app.use(router)`\n- เสิร์ฟไฟล์ static จากโฟลเดอร์ `public` (เช่น `/mystyle.css`)\n- `GET /` → ส่งข้อความ `Hello World from Root!`\n- `GET /about` → ส่งไฟล์ `html/about.html` ด้วย `res.sendFile`\n- path อื่น → status **404** ข้อความ `Invalid Path` (ต้องวางให้ถูกตำแหน่ง)",
+  "starter": "const express = require(\"express\");\nconst path = require(\"path\");\nconst port = 3000;\nconst app = express();",
+  "hints": [
+   "static: `app.use(\"/\", express.static(path.join(__dirname, \"public\")))`",
+   "`res.sendFile` ต้องใช้ absolute path → `path.join(__dirname, \"html/about.html\")`",
+   "route 404 ใช้ `router.use((req, res, next) => ...)` และต้องอยู่ **หลัง** route อื่นทั้งหมด"
+  ],
+  "checks": [
+   [
+    "สร้าง express.Router()",
+    "express\\.Router\\s*\\(\\s*\\)"
+   ],
+   [
+    "app.use(router)",
+    "app\\.use\\s*\\(\\s*router\\s*\\)"
+   ],
+   [
+    "ใช้ express.static",
+    "express\\.static\\s*\\("
+   ],
+   [
+    "route GET /",
+    "\\.get\\s*\\(\\s*['\\\"`]/['\\\"`]"
+   ],
+   [
+    "sendFile ด้วย path.join(__dirname",
+    "sendFile\\s*\\(\\s*path\\.join\\s*\\(\\s*__dirname"
+   ],
+   [
+    "ตอบ 404",
+    "status\\s*\\(\\s*404\\s*\\)"
+   ],
+   [
+    "app.listen(port",
+    "app\\.listen\\s*\\(\\s*port"
+   ]
+  ],
+  "solution": "const express = require(\"express\");\nconst path = require(\"path\");\nconst port = 3000;\nconst app = express();\nconst router = express.Router();\n\napp.use(router);\napp.use(\"/\", express.static(path.join(__dirname, \"public\")));\n\nrouter.get(\"/\", (req, res) => {\n  res.send(\"Hello World from Root!\");\n});\n\nrouter.get(\"/about\", (req, res) => {\n  res.sendFile(path.join(__dirname, \"html/about.html\"));\n});\n\n// ต้องอยู่ท้ายสุด ไม่งั้นทุก path จะกลายเป็น 404\nrouter.use((req, res, next) => {\n  res.status(404).send(\"Invalid Path\");\n});\n\napp.listen(port, () => console.log(`Server listening on port: ${port}`));"
+ },
+ {
+  "id": "form-get-post",
+  "ch": "web-10",
+  "title": "รับค่าฟอร์มแบบ GET และ POST",
+  "level": "สำคัญมาก",
+  "prompt": "มีฟอร์ม 2 อัน input ชื่อ `fname` และ `lname`\n\n```html\n<form action=\"/form-get\" method=\"GET\">...</form>\n<form action=\"/form-post\" method=\"POST\">...</form>\n```\n\nเขียน route ใน `router` ที่\n\n- `GET /form-get` ตอบ `Form submitted by <fname> <lname> with GET`\n- `POST /form-post` ตอบ `Form submitted by <fname> <lname> with POST`\n- อย่าลืม middleware ที่ทำให้อ่านค่า POST ได้",
+  "starter": "// สมมติมี app, router, express แล้ว",
+  "hints": [
+   "GET อ่านจาก `req.query.fname` (ข้อมูลอยู่ใน URL)",
+   "POST อ่านจาก `req.body.fname` ต้องมี `router.use(express.urlencoded({ extended: true }))`",
+   "method ที่ใช้ดูได้จาก `req.method`"
+  ],
+  "checks": [
+   [
+    "มี express.urlencoded",
+    "express\\.urlencoded\\s*\\("
+   ],
+   [
+    "router.get('/form-get'",
+    "\\.get\\s*\\(\\s*['\\\"`]/form-get"
+   ],
+   [
+    "router.post('/form-post'",
+    "\\.post\\s*\\(\\s*['\\\"`]/form-post"
+   ],
+   [
+    "อ่าน req.query.fname",
+    "req\\.query\\.fname"
+   ],
+   [
+    "อ่าน req.body.fname",
+    "req\\.body\\.fname"
+   ],
+   [
+    "ใช้ req.method",
+    "req\\.method"
+   ]
+  ],
+  "solution": "router.use(express.json());\nrouter.use(express.urlencoded({ extended: true }));\n\nrouter.get(\"/form-get\", (req, res) => {\n  res.send(`Form submitted by ${req.query.fname} ${req.query.lname} with ${req.method}`);\n});\n\nrouter.post(\"/form-post\", (req, res) => {\n  res.send(`Form submitted by ${req.body.fname} ${req.body.lname} with ${req.method}`);\n});"
+ },
+ {
+  "id": "modular-route",
+  "ch": "web-10",
+  "title": "แยก route เป็นไฟล์ (modular routes)",
+  "level": "กลาง",
+  "prompt": "ทำให้ URL `GET /product/add` ตอบ `Add product page`\n\n- สร้างไฟล์ `routes/product.js` ที่มี router ของตัวเอง และ `module.exports` ออกไป\n- ใน `app.js` import มาแล้ว mount ที่ `/product`",
+  "starter": "// ===== routes/product.js =====\n\n\n// ===== app.js =====",
+  "hints": [
+   "ในไฟล์ route: `const r = express.Router(); r.get(\"/add\", ...); module.exports = r;`",
+   "URL จริง = mount path + path ใน router → `app.use(\"/product\", productRouter)`"
+  ],
+  "checks": [
+   [
+    "สร้าง Router ในไฟล์ route",
+    "express\\.Router\\s*\\(\\s*\\)"
+   ],
+   [
+    "route /add",
+    "\\.get\\s*\\(\\s*['\\\"`]/add"
+   ],
+   [
+    "module.exports router",
+    "module\\.exports\\s*="
+   ],
+   [
+    "require ไฟล์ route",
+    "require\\s*\\(\\s*['\\\"`]\\./routes/product"
+   ],
+   [
+    "mount ที่ /product",
+    "\\.use\\s*\\(\\s*['\\\"`]/product['\\\"`]\\s*,"
+   ]
+  ],
+  "solution": "// ===== routes/product.js =====\nconst express = require(\"express\");\nconst router = express.Router();\n\nrouter.get(\"/add\", (req, res) => {\n  res.send(\"Add product page\");\n});\n\nmodule.exports = router;\n\n// ===== app.js =====\nconst express = require(\"express\");\nconst app = express();\nconst productRouter = require(\"./routes/product\");\n\napp.use(\"/product\", productRouter);   // /product + /add = /product/add\napp.listen(3000);"
+ },
+ {
+  "id": "cookie",
+  "ch": "web-11",
+  "title": "Cookie: login / restrict / logout",
+  "level": "สำคัญ",
+  "prompt": "ใช้ `cookie-parser` เขียน 3 route\n\n- `GET /login` → ตั้ง cookie `tokenID` = `\"abc\"` อายุ 360000 ms แล้วตอบ `Login !!`\n- `GET /restrict` → ถ้ามี cookie `tokenID` ตอบ `OK` ไม่งั้นตอบ status **401** `Error 401`\n- `GET /logout` → ลบ cookie `tokenID` แล้วตอบ `Logout !!`",
+  "starter": "const express = require(\"express\");\nconst app = express();\nconst router = express.Router();\napp.use(router);",
+  "hints": [
+   "`const cp = require(\"cookie-parser\"); router.use(cp());`",
+   "ตั้ง: `res.cookie(\"tokenID\", \"abc\", { maxAge: 360000 })` · อ่าน: `req.cookies[\"tokenID\"]` · ลบ: `res.clearCookie(\"tokenID\")`"
+  ],
+  "checks": [
+   [
+    "require cookie-parser",
+    "require\\s*\\(\\s*['\\\"`]cookie-parser"
+   ],
+   [
+    "use cookie-parser()",
+    "\\.use\\s*\\(\\s*\\w+\\s*\\(\\s*\\)\\s*\\)"
+   ],
+   [
+    "res.cookie('tokenID'",
+    "res\\.cookie\\s*\\(\\s*['\\\"`]tokenID"
+   ],
+   [
+    "ตั้ง maxAge",
+    "maxAge|expire"
+   ],
+   [
+    "อ่าน req.cookies",
+    "req\\.cookies"
+   ],
+   [
+    "status 401",
+    "401"
+   ],
+   [
+    "res.clearCookie",
+    "res\\.clearCookie\\s*\\("
+   ]
+  ],
+  "solution": "const express = require(\"express\");\nconst cp = require(\"cookie-parser\");\nconst app = express();\nconst router = express.Router();\napp.use(router);\nrouter.use(cp());\n\nrouter.get(\"/login\", (req, res) => {\n  res.cookie(\"tokenID\", \"abc\", { maxAge: 360000 });\n  res.send(\"Login !!\");\n});\n\nrouter.get(\"/restrict\", (req, res) => {\n  if (req.cookies[\"tokenID\"]) res.send(\"OK\");\n  else res.status(401).end(\"Error 401\");\n});\n\nrouter.get(\"/logout\", (req, res) => {\n  res.clearCookie(\"tokenID\");\n  res.send(\"Logout !!\");\n});"
+ },
+ {
+  "id": "session",
+  "ch": "web-11",
+  "title": "Session นับจำนวนครั้งที่เข้าหน้า + .env",
+  "level": "กลาง",
+  "prompt": "- โหลดค่าจาก `.env` (มี `PORT` และ `SESSION_SECRET`)\n- ตั้ง `express-session` ด้วย secret จาก env, `resave: false`, `saveUninitialized: true`\n- `GET /pageview` → เพิ่มค่า `req.session.numviews` ทีละ 1 (ครั้งแรก = 1) แล้วตอบ `You visited N times`\n- listen ที่ `process.env.PORT`",
+  "starter": "const express = require(\"express\");\nconst app = express();",
+  "hints": [
+   "`require(\"dotenv\").config()` ต้องเรียกก่อนใช้ `process.env`",
+   "`app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }))`"
+  ],
+  "checks": [
+   [
+    "dotenv config()",
+    "dotenv['\\\"`]?\\s*\\)?\\s*\\.config\\s*\\(|dotenv\\.config\\s*\\("
+   ],
+   [
+    "require express-session",
+    "require\\s*\\(\\s*['\\\"`]express-session"
+   ],
+   [
+    "secret จาก process.env",
+    "secret\\s*:\\s*process\\.env"
+   ],
+   [
+    "ใช้ req.session.numviews",
+    "req\\.session\\.numviews"
+   ],
+   [
+    "listen process.env.PORT",
+    "listen\\s*\\(\\s*process\\.env\\.PORT"
+   ]
+  ],
+  "solution": "require(\"dotenv\").config();\nconst express = require(\"express\");\nconst session = require(\"express-session\");\nconst app = express();\n\napp.use(session({\n  secret: process.env.SESSION_SECRET,\n  resave: false,\n  saveUninitialized: true\n}));\n\napp.get(\"/pageview\", (req, res) => {\n  if (req.session.numviews) req.session.numviews++;\n  else req.session.numviews = 1;\n  res.send(`You visited ${req.session.numviews} times`);\n});\n\napp.listen(process.env.PORT, () => console.log(`Server listening on port: ${process.env.PORT}`));"
+ },
+ {
+  "id": "mysql-search",
+  "ch": "wlab-11",
+  "title": "ฟอร์มค้นหาอาจารย์ใน MySQL (แนว Lab 11)",
+  "level": "สำคัญมาก",
+  "prompt": "ฟอร์ม `action=\"/form-submit\" method=\"POST\"` มี input `name=\"emp_num\"`\n\nเขียน\n\n1. การเชื่อมต่อ MySQL ด้วย `mysql2` โดยดึงค่าจาก `.env` (`DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`)\n2. `POST /form-submit` → query `SELECT * FROM Professor WHERE emp_num = ?` (ห้ามต่อ string)\n3. ถ้าเจอ → ส่ง `html/found.html` ไม่เจอ → `html/notfound.html` และ log จำนวนแถว",
+  "starter": "require(\"dotenv\").config();\nconst express = require(\"express\");\nconst path = require(\"path\");\nconst mysql = require(\"mysql2\");\nconst app = express();",
+  "hints": [
+   "`mysql.createConnection({ host: process.env.DB_HOST, user: ..., password: ..., database: ... })`",
+   "อย่าลืม `app.use(express.urlencoded({ extended: true }))` ไม่งั้น `req.body` เป็น undefined",
+   "`connection.query(sql, [req.body.emp_num], (error, results) => { ... results.length ... })`"
+  ],
+  "checks": [
+   [
+    "mysql.createConnection",
+    "mysql\\.createConnection\\s*\\("
+   ],
+   [
+    "ใช้ค่าจาก process.env",
+    "process\\.env\\.DB_"
+   ],
+   [
+    "express.urlencoded",
+    "express\\.urlencoded"
+   ],
+   [
+    "app.post('/form-submit'",
+    "\\.post\\s*\\(\\s*['\\\"`]/form-submit"
+   ],
+   [
+    "ใช้ placeholder ?",
+    "emp_num\\s*=\\s*\\?"
+   ],
+   [
+    "เช็ก results.length",
+    "results\\.length"
+   ],
+   [
+    "ส่ง found / notfound",
+    "notfound\\.html"
+   ]
+  ],
+  "solution": "require(\"dotenv\").config();\nconst express = require(\"express\");\nconst path = require(\"path\");\nconst mysql = require(\"mysql2\");\nconst app = express();\n\napp.use(express.urlencoded({ extended: true }));\n\nconst connection = mysql.createConnection({\n  host: process.env.DB_HOST,\n  user: process.env.DB_USER,\n  password: process.env.DB_PASS,\n  database: process.env.DB_NAME\n});\nconnection.connect(err => { if (err) throw err; console.log(\"Connected DB\"); });\n\napp.post(\"/form-submit\", (req, res) => {\n  const empNum = req.body.emp_num;\n  connection.query(\"SELECT * FROM Professor WHERE emp_num = ?\", [empNum], (error, results) => {\n    if (error) throw error;\n    console.log(`${results.length} rows returned`);\n    if (results.length > 0) res.sendFile(path.join(__dirname, \"html\", \"found.html\"));\n    else res.sendFile(path.join(__dirname, \"html\", \"notfound.html\"));\n  });\n});\n\napp.listen(process.env.PORT);"
+ },
+ {
+  "id": "fetch-render",
+  "ch": "wlab-12",
+  "title": "fetch API แล้วแสดงผลในหน้าเว็บ (แนว Lab 12)",
+  "level": "สำคัญ",
+  "prompt": "ฝั่ง browser: เมื่อกดปุ่ม `#btn` ให้\n\n1. อ่านคำค้นจาก `<input id=\"q\">`\n2. `fetch` ไปที่ `https://api.example.com/recipes?query=<คำค้น>&number=10`\n3. ถ้า `res.ok` เป็น false ให้ throw error\n4. แสดงผล `data.results` (แต่ละอันมี `image`, `title`) เป็น `<div><img><p></p></div>` ลงใน `#output`\n5. มี `.catch` log error",
+  "starter": "document.querySelector(\"#btn\").addEventListener(\"click\", () => {\n\n});",
+  "hints": [
+   "ค่าจาก input: `document.querySelector(\"#q\").value`",
+   "`fetch(url).then(res => { if (!res.ok) throw new Error(res.status); return res.json(); })`",
+   "ใช้ `data.results.map(r => `...`).join(\"\")` แล้วใส่ `innerHTML`"
+  ],
+  "checks": [
+   [
+    "อ่านค่า #q .value",
+    "#q['\\\"`]\\s*\\)\\s*\\.value"
+   ],
+   [
+    "เรียก fetch(",
+    "fetch\\s*\\("
+   ],
+   [
+    "เช็ก res.ok",
+    "\\.ok\\b"
+   ],
+   [
+    "แปลง res.json()",
+    "\\.json\\s*\\(\\s*\\)"
+   ],
+   [
+    "วน data.results",
+    "\\.results\\s*\\.\\s*(map|forEach)"
+   ],
+   [
+    "ใส่ innerHTML",
+    "innerHTML"
+   ],
+   [
+    "มี .catch",
+    "\\.catch\\s*\\("
+   ]
+  ],
+  "solution": "document.querySelector(\"#btn\").addEventListener(\"click\", () => {\n  const q = document.querySelector(\"#q\").value;\n  const url = `https://api.example.com/recipes?query=${encodeURIComponent(q)}&number=10`;\n\n  fetch(url)\n    .then(res => {\n      if (!res.ok) throw new Error(\"HTTP \" + res.status);   // fetch ไม่ reject ตอน 4xx/5xx\n      return res.json();\n    })\n    .then(data => {\n      document.querySelector(\"#output\").innerHTML = data.results\n        .map(r => `<div><img src=\"${r.image}\" alt=\"\"><p>${r.title}</p></div>`)\n        .join(\"\");\n    })\n    .catch(err => console.log(err));\n});"
+ },
+ {
+  "id": "ws-post",
+  "ch": "web-13",
+  "title": "Web Service: POST /student (Create)",
+  "level": "สำคัญมาก",
+  "prompt": "เขียน route `POST /student` ของ Student Web Service\n\n- ข้อมูลส่งมาเป็น JSON `{ \"student\": { ... } }`\n- ถ้าไม่มี `student` → status **400** `{ error: true, message: \"Please provide student information\" }`\n- ไม่งั้น `INSERT INTO student SET ?` แล้วตอบ `{ error: false, data: results.affectedRows, message: \"New student has been created successfully.\" }`\n- สมมติมี `route` และ `dbConn` แล้ว และมี `express.json()` แล้ว",
+  "starter": "route.post(\"/student\", (req, res) => {\n\n});",
+  "hints": [
+   "รับค่าจาก `req.body.student`",
+   "ใช้ `return res.status(400).send({...})` เพื่อหยุดทำงานต่อ",
+   "`dbConn.query(\"INSERT INTO student SET ?\", student, (error, results) => {...})`"
+  ],
+  "checks": [
+   [
+    "อ่าน req.body.student",
+    "req\\.body\\.student"
+   ],
+   [
+    "status 400",
+    "status\\s*\\(\\s*400"
+   ],
+   [
+    "INSERT INTO student SET ?",
+    "INSERT\\s+INTO\\s+student\\s+SET\\s+\\?"
+   ],
+   [
+    "ส่ง affectedRows",
+    "affectedRows"
+   ],
+   [
+    "รูปแบบ { error, data, message }",
+    "error\\s*:\\s*false"
+   ]
+  ],
+  "solution": "route.post(\"/student\", (req, res) => {\n  let student = req.body.student;\n  if (!student) {\n    return res.status(400).send({ error: true, message: \"Please provide student information\" });\n  }\n  dbConn.query(\"INSERT INTO student SET ?\", student, (error, results) => {\n    if (error) throw error;\n    return res.send({\n      error: false,\n      data: results.affectedRows,\n      message: \"New student has been created successfully.\"\n    });\n  });\n});"
+ },
+ {
+  "id": "ws-put-del",
+  "ch": "web-13",
+  "title": "Web Service: PUT และ DELETE /student",
+  "level": "สำคัญมาก",
+  "prompt": "เขียน 2 route (สมมติมี `route` และ `dbConn`)\n\n- `PUT /student` → body `{ student_id, student: {...} }` → `UPDATE student SET ? WHERE STU_ID = ?` ตอบ `{ error: false, data: results.affectedRows, message: \"Student has been updated successfully.\" }`\n- `DELETE /student` → body `{ student_id }` → `DELETE FROM student WHERE STU_ID = ?` ตอบ message `\"Student has been deleted successfully.\"`\n- ถ้าข้อมูลไม่ครบ → status 400",
+  "starter": "route.put(\"/student\", (req, res) => {\n\n});\n\nroute.delete(\"/student\", (req, res) => {\n\n});",
+  "hints": [
+   "placeholder หลายตัวส่งเป็น array ตามลำดับ: `[student, student_id]`",
+   "DELETE ก็อ่าน id จาก `req.body.student_id`"
+  ],
+  "checks": [
+   [
+    "route.put('/student'",
+    "\\.put\\s*\\(\\s*['\\\"`]/student"
+   ],
+   [
+    "route.delete('/student'",
+    "\\.delete\\s*\\(\\s*['\\\"`]/student"
+   ],
+   [
+    "UPDATE ... SET ? WHERE STU_ID = ?",
+    "UPDATE\\s+student\\s+SET\\s+\\?\\s+WHERE\\s+STU_ID\\s*=\\s*\\?"
+   ],
+   [
+    "ส่ง [student, id] เป็น array",
+    "\\[\\s*student\\s*,\\s*\\w+"
+   ],
+   [
+    "DELETE FROM student WHERE STU_ID = ?",
+    "DELETE\\s+FROM\\s+student\\s+WHERE\\s+STU_ID\\s*=\\s*\\?"
+   ],
+   [
+    "มี status 400",
+    "status\\s*\\(\\s*400"
+   ]
+  ],
+  "solution": "route.put(\"/student\", (req, res) => {\n  let student_id = req.body.student_id;\n  let student = req.body.student;\n  if (!student_id || !student) {\n    return res.status(400).send({ error: true, message: \"Please provide student information\" });\n  }\n  dbConn.query(\"UPDATE student SET ? WHERE STU_ID = ?\", [student, student_id], (error, results) => {\n    if (error) throw error;\n    return res.send({ error: false, data: results.affectedRows, message: \"Student has been updated successfully.\" });\n  });\n});\n\nroute.delete(\"/student\", (req, res) => {\n  let student_id = req.body.student_id;\n  if (!student_id) {\n    return res.status(400).send({ error: true, message: \"Please provide student_id\" });\n  }\n  dbConn.query(\"DELETE FROM student WHERE STU_ID = ?\", [student_id], (error, results) => {\n    if (error) throw error;\n    return res.send({ error: false, data: results.affectedRows, message: \"Student has been deleted successfully.\" });\n  });\n});"
+ },
+ {
+  "id": "ws-get",
+  "ch": "web-13",
+  "title": "Web Service: GET ทั้งหมด และ GET ตาม id",
+  "level": "สำคัญ",
+  "prompt": "- `GET /students` → `SELECT * FROM student` ตอบ `{ error: false, data: results, message: \"Student list.\" }`\n- `GET /student/:id` → อ่าน id จาก URL → ตอบ `{ error: false, data: results[0], message: \"Student retrieved\" }`\n- ถ้าไม่มี id → status 400",
+  "starter": "route.get(\"/students\", (req, res) => {\n\n});\n\nroute.get(\"/student/:id\", (req, res) => {\n\n});",
+  "hints": [
+   "ค่าจาก `/student/:id` อ่านด้วย `req.params.id` (ไม่ใช่ query/body)",
+   "ได้แถวเดียวให้ส่ง `results[0]`"
+  ],
+  "checks": [
+   [
+    "SELECT * FROM student",
+    "SELECT\\s+\\*\\s+FROM\\s+student"
+   ],
+   [
+    "route /student/:id",
+    "/student/:id"
+   ],
+   [
+    "อ่าน req.params.id",
+    "req\\.params\\.id"
+   ],
+   [
+    "WHERE STU_ID = ?",
+    "WHERE\\s+STU_ID\\s*=\\s*\\?"
+   ],
+   [
+    "ส่ง results[0]",
+    "results\\s*\\[\\s*0\\s*\\]"
+   ]
+  ],
+  "solution": "route.get(\"/students\", (req, res) => {\n  dbConn.query(\"SELECT * FROM student\", (error, results) => {\n    if (error) throw error;\n    return res.send({ error: false, data: results, message: \"Student list.\" });\n  });\n});\n\nroute.get(\"/student/:id\", (req, res) => {\n  let student_id = req.params.id;\n  if (!student_id) {\n    return res.status(400).send({ error: true, message: \"Please provide student id.\" });\n  }\n  dbConn.query(\"SELECT * FROM student WHERE STU_ID = ?\", student_id, (error, results) => {\n    if (error) throw error;\n    return res.send({ error: false, data: results[0], message: \"Student retrieved\" });\n  });\n});"
+ },
+ {
+  "id": "jwt",
+  "ch": "web-13",
+  "title": "JWT: ออก token ตอน login + middleware ตรวจ",
+  "level": "สำคัญมาก",
+  "prompt": "1. `POST /login` → (สมมติตรวจรหัสผ่านผ่านแล้ว ได้ `email`, `userid`) สร้าง token ด้วย `jwt.sign` อายุ **1h** จาก `process.env.SECRET` แล้วตอบ `{ token }`\n2. ไฟล์ `authorize.js` → middleware อ่าน token จาก header `Authorization: Bearer <token>` แล้ว verify ถ้าไม่ผ่านตอบ status **401** `{ error: true, message: \"Authentication failed!\" }`\n3. ป้องกัน `GET /students` ด้วย middleware นี้",
+  "starter": "const jwt = require(\"jsonwebtoken\");\n\n// 1) login\n\n\n// 2) authorize.js\n\n\n// 3) ใช้ middleware",
+  "hints": [
+   "`jwt.sign({ email, userid }, process.env.SECRET, { expiresIn: \"1h\" })`",
+   "header มีรูป `\"Bearer xxx\"` → `req.headers.authorization.split(\" \")[1]`",
+   "ครอบด้วย `try { jwt.verify(...); next(); } catch (e) { ...401... }` แล้วใส่เป็น argument ตัวกลาง: `router.get(\"/students\", authorize, handler)`"
+  ],
+  "checks": [
+   [
+    "jwt.sign(",
+    "jwt\\.sign\\s*\\("
+   ],
+   [
+    "expiresIn 1h",
+    "expiresIn\\s*:\\s*['\\\"`]1h"
+   ],
+   [
+    "อ่าน headers.authorization",
+    "headers\\.authorization"
+   ],
+   [
+    "split เอาส่วนหลัง Bearer",
+    "split\\s*\\(\\s*['\\\"`] ['\\\"`]\\s*\\)\\s*\\[\\s*1\\s*\\]"
+   ],
+   [
+    "jwt.verify(",
+    "jwt\\.verify\\s*\\("
+   ],
+   [
+    "เรียก next()",
+    "next\\s*\\(\\s*\\)"
+   ],
+   [
+    "status 401",
+    "status\\s*\\(\\s*401"
+   ],
+   [
+    "ใส่ middleware ใน route",
+    "\\.get\\s*\\(\\s*['\\\"`]/students['\\\"`]\\s*,\\s*\\w+\\s*,"
+   ]
+  ],
+  "solution": "const jwt = require(\"jsonwebtoken\");\n\n// 1) login\nrouter.post(\"/login\", (req, res) => {\n  // ... ตรวจ email/password กับ DB แล้วได้ email, userid\n  let token = jwt.sign({ email, userid }, process.env.SECRET, { expiresIn: \"1h\" });\n  res.send({ error: false, token: token, message: \"Login successful\" });\n});\n\n// 2) authorize.js\nmodule.exports = (req, res, next) => {\n  try {\n    const token = req.headers.authorization.split(\" \")[1];   // \"Bearer xxx\" -> \"xxx\"\n    jwt.verify(token, process.env.SECRET);\n    next();\n  } catch (e) {\n    res.status(401).json({ error: true, message: \"Authentication failed!\" });\n  }\n};\n\n// 3) ใช้ middleware\nconst authorize = require(\"./authorize\");\nrouter.get(\"/students\", authorize, (req, res) => {\n  dbConn.query(\"SELECT * FROM student\", (error, results) => {\n    if (error) throw error;\n    res.send({ error: false, data: results, message: \"Student list.\" });\n  });\n});"
+ },
+ {
+  "id": "cors",
+  "ch": "web-13",
+  "title": "เปิด CORS ให้ front-end เรียกได้",
+  "level": "กลาง",
+  "prompt": "Web service รันที่ port 3000 ส่วนหน้าเว็บรันที่ `http://localhost:3100` แล้วโดน **CORS** บล็อก\n\nแก้ฝั่ง server 2 แบบ\n\n1. ใช้ package `cors` อนุญาตเฉพาะ origin `http://localhost:3100` และ method `GET,POST,PUT,DELETE`\n2. แบบไม่ใช้ package: ตั้ง header เองใน middleware แล้วเรียก `next()`",
+  "starter": "const express = require(\"express\");\nconst app = express();\n\n// แบบ 1\n\n\n// แบบ 2",
+  "hints": [
+   "`app.use(cors({ origin: [\"http://localhost:3100\"], methods: \"GET,POST,PUT,DELETE\" }))`",
+   "`res.header(\"Access-Control-Allow-Origin\", \"http://localhost:3100\")` แล้ว `next()`"
+  ],
+  "checks": [
+   [
+    "require cors",
+    "require\\s*\\(\\s*['\\\"`]cors"
+   ],
+   [
+    "ตั้ง origin",
+    "origin\\s*:"
+   ],
+   [
+    "ตั้ง methods",
+    "methods\\s*:"
+   ],
+   [
+    "header Access-Control-Allow-Origin",
+    "Access-Control-Allow-Origin"
+   ],
+   [
+    "เรียก next()",
+    "next\\s*\\(\\s*\\)"
+   ]
+  ],
+  "solution": "const express = require(\"express\");\nconst cors = require(\"cors\");\nconst app = express();\n\n// แบบ 1: ใช้ package cors\napp.use(cors({\n  origin: [\"http://localhost:3100\"],\n  methods: \"GET,POST,PUT,DELETE\"\n}));\n\n// แบบ 2: ตั้ง header เอง\napp.use((req, res, next) => {\n  res.header(\"Access-Control-Allow-Origin\", \"http://localhost:3100\");\n  res.header(\"Access-Control-Allow-Methods\", \"GET,POST,PUT,DELETE\");\n  res.header(\"Access-Control-Allow-Headers\", \"Content-Type, Authorization\");\n  next();\n});"
+ },
+ {
+  "id": "fetch-post-token",
+  "ch": "web-13",
+  "title": "Client: fetch POST JSON พร้อม Bearer token",
+  "level": "สำคัญ",
+  "prompt": "ฝั่ง browser มี `token` (ได้จากตอน login เก็บไว้ใน `localStorage`) เขียน\n\n1. function `addStudent(student)` → `POST http://localhost:3000/student` ส่ง body `{ student }` เป็น JSON พร้อม header `Authorization`\n2. log `data.message` ที่ได้กลับมา\n3. เวอร์ชันเดียวกันด้วย **axios** (`axios.post`)",
+  "starter": "const token = localStorage.getItem(\"token\");\n\nfunction addStudent(student) {\n\n}",
+  "hints": [
+   "fetch ต้องตั้ง `method: \"POST\"`, `headers: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + token }`",
+   "body ต้องเป็น string: `JSON.stringify({ student })`",
+   "axios: `axios.post(url, { student }, { headers: {...} }).then(res => res.data)` (axios แปลง JSON ให้เอง)"
+  ],
+  "checks": [
+   [
+    "method POST",
+    "method\\s*:\\s*['\\\"`]POST"
+   ],
+   [
+    "Content-Type application/json",
+    "application/json"
+   ],
+   [
+    "Authorization Bearer",
+    "Bearer\\s"
+   ],
+   [
+    "JSON.stringify body",
+    "JSON\\.stringify\\s*\\("
+   ],
+   [
+    "res.json()",
+    "\\.json\\s*\\(\\s*\\)"
+   ],
+   [
+    "axios.post",
+    "axios\\.post\\s*\\("
+   ]
+  ],
+  "solution": "const token = localStorage.getItem(\"token\");\n\nfunction addStudent(student) {\n  fetch(\"http://localhost:3000/student\", {\n    method: \"POST\",\n    headers: {\n      \"Content-Type\": \"application/json\",\n      \"Authorization\": \"Bearer \" + token\n    },\n    body: JSON.stringify({ student: student })\n  })\n    .then(res => res.json())\n    .then(data => console.log(data.message))\n    .catch(err => console.log(err));\n}\n\n// axios\nfunction addStudentAxios(student) {\n  axios.post(\"http://localhost:3000/student\", { student }, {\n    headers: { Authorization: \"Bearer \" + token }\n  })\n    .then(res => console.log(res.data.message))   // axios แปลง JSON ให้แล้ว\n    .catch(err => console.log(err));\n}"
+ }
+]

@@ -1,0 +1,766 @@
+{
+ "net-4": [
+  {
+   "q": "IP 192.168.10.0/26 มี Broadcast address ของวงแรกคืออะไร",
+   "c": [
+    "192.168.10.62",
+    "192.168.10.63",
+    "192.168.10.64",
+    "192.168.10.255"
+   ],
+   "a": 1,
+   "why": [
+    "นี่คือ last usable IP ไม่ใช่ broadcast",
+    "ถูกต้อง: /26 → block 64 วงแรก .0–.63 broadcast = .63",
+    "นี่คือ network address ของวงที่ 2",
+    "นี่จะเป็น broadcast ถ้าเป็น /24"
+   ]
+  },
+  {
+   "q": "เซิร์ฟเวอร์ 10.10.15.110/28 อยู่ใน network address ใด",
+   "c": [
+    "10.10.15.96",
+    "10.10.15.100",
+    "10.10.15.110",
+    "10.10.15.112"
+   ],
+   "a": 0,
+   "why": [
+    "ถูกต้อง: /28 → block 16 → floor(110/16)=6 → 6×16 = 96 ช่วง .96–.111",
+    "100 หาร 16 ไม่ลงตัว network ต้องหาร block ลงตัว",
+    "นี่คือ IP ของ host ไม่ใช่ network",
+    "112 คือ network ของวงถัดไป (.112–.127)"
+   ]
+  },
+  {
+   "q": "ต้องการวงที่รองรับ 50 เครื่อง ควรใช้ prefix ใดเพื่อประหยัดที่สุด",
+   "c": [
+    "/25",
+    "/26",
+    "/27",
+    "/24"
+   ],
+   "a": 1,
+   "why": [
+    "/25 ได้ 126 เครื่อง ใช้ได้แต่เปลืองกว่า",
+    "ถูกต้อง: 50+2 = 52 → 2^6 = 64 พอ → 32−6 = /26 ใช้ได้ 62 เครื่อง",
+    "/27 ได้แค่ 30 เครื่อง ไม่พอ",
+    "/24 ได้ 254 เปลืองมาก"
+   ]
+  },
+  {
+   "q": "datagram data 3,200 bytes ผ่าน MTU 1,000 (header 20) ชิ้นที่ 2 มี fragment offset เท่าไร",
+   "c": [
+    "122",
+    "980",
+    "976",
+    "123"
+   ],
+   "a": 0,
+   "why": [
+    "ถูกต้อง: max data = floor(980/8)×8 = 976 → ชิ้นที่ 2 เริ่มที่ byte 976 → offset = 976/8 = 122",
+    "980 หาร 8 ไม่ลงตัว data ต่อชิ้นจึงต้องเหลือ 976 และ offset นับเป็นหน่วย 8 bytes",
+    "976 คือ byte เริ่มต้น ต้องหาร 8 ก่อน",
+    "ถ้าใช้ 980/8 = 122.5 ปัดขึ้นผิด ต้องปัดลง data ให้หาร 8 ลงตัว"
+   ]
+  },
+  {
+   "q": "ข้อใดไม่มีใน IPv6 header เมื่อเทียบกับ IPv4",
+   "c": [
+    "Source address",
+    "Hop limit",
+    "Checksum",
+    "Flow label"
+   ],
+   "a": 2,
+   "why": [
+    "IPv6 มี source address ขนาด 128 bit",
+    "hop limit มี (ทำหน้าที่คล้าย TTL)",
+    "ถูกต้อง: IPv6 ตัด checksum (และ fragmentation, options) ออกเพื่อให้ router ประมวลผลเร็ว",
+    "flow label เป็นของใหม่ใน IPv6"
+   ]
+  },
+  {
+   "q": "ข้อความ DHCP แรกที่ client ส่งเมื่อเข้าเครือข่ายใหม่คืออะไร และส่งแบบใด",
+   "c": [
+    "DHCP request แบบ unicast",
+    "DHCP discover แบบ broadcast",
+    "DHCP offer แบบ broadcast",
+    "DHCP ack แบบ unicast"
+   ],
+   "a": 1,
+   "why": [
+    "request เป็นขั้นที่ 3 หลังได้ offer",
+    "ถูกต้อง: client ยังไม่มี IP จึง broadcast DHCP discover (src 0.0.0.0:68 → 255.255.255.255:67)",
+    "offer ส่งจาก server ไม่ใช่ client",
+    "ack เป็นขั้นสุดท้ายจาก server"
+   ]
+  }
+ ],
+ "net-5": [
+  {
+   "q": "OSPF ใช้อัลกอริทึมใดคำนวณเส้นทาง",
+   "c": [
+    "Bellman-Ford",
+    "Dijkstra",
+    "Path vector",
+    "Hot potato"
+   ],
+   "a": 1,
+   "why": [
+    "Bellman-Ford เป็นของ distance vector (เช่น RIP)",
+    "ถูกต้อง: OSPF เป็น link-state ทุก router มี topology ครบแล้วใช้ Dijkstra",
+    "path vector คือแนวทางของ BGP",
+    "hot potato เป็นนโยบายเลือก gateway ใน BGP"
+   ]
+  },
+  {
+   "q": "BGP ที่ใช้กระจายข้อมูลเส้นทางให้ router ภายใน AS เดียวกันเรียกว่าอะไร",
+   "c": [
+    "eBGP",
+    "iBGP",
+    "OSPF",
+    "ICMP"
+   ],
+   "a": 1,
+   "why": [
+    "eBGP ใช้คุยกับ router ต่าง AS",
+    "ถูกต้อง: iBGP กระจาย reachability ภายใน AS",
+    "OSPF เป็น intra-AS routing ไม่ใช่ BGP",
+    "ICMP ใช้แจ้ง error"
+   ]
+  },
+  {
+   "q": "router 2d ไปหา X ได้ทาง gateway 2a (intra cost 201) หรือ 2c (263) แต่ทาง 2a มี AS hop มากกว่า ถ้าใช้ hot potato routing จะเลือกอะไร",
+   "c": [
+    "2c เพราะ AS hop น้อยกว่า",
+    "2a เพราะ intra-domain cost ต่ำกว่า",
+    "สุ่มเลือก",
+    "ส่งทั้งสองทาง"
+   ],
+   "a": 1,
+   "why": [
+    "hot potato ไม่สน inter-domain cost/AS hop",
+    "ถูกต้อง: hot potato เลือก gateway ที่ intra-domain cost ต่ำสุด รีบส่งออกจาก AS ตัวเอง",
+    "ไม่ได้สุ่ม",
+    "BGP เลือกเส้นทางเดียว"
+   ]
+  },
+  {
+   "q": "traceroute ได้ ICMP type 11 code 0 กลับมาจาก router ระหว่างทาง ความหมายคืออะไร",
+   "c": [
+    "Port unreachable",
+    "TTL expired",
+    "Echo reply",
+    "Host unknown"
+   ],
+   "a": 1,
+   "why": [
+    "type 3 code 3 = port unreachable (ได้จากปลายทางตอนจบ)",
+    "ถูกต้อง: type 11 code 0 = TTL expired router ทิ้ง datagram และแจ้งกลับ",
+    "echo reply คือ type 0",
+    "host unknown คือ type 3 code 7"
+   ]
+  },
+  {
+   "q": "ใน SDN ข้อความ OpenFlow ที่ switch ใช้แจ้ง controller เมื่อ link/port มีการเปลี่ยนแปลงคือ",
+   "c": [
+    "packet-out",
+    "modify-state",
+    "port status",
+    "features"
+   ],
+   "a": 2,
+   "why": [
+    "packet-out เป็น controller → switch",
+    "modify-state เป็น controller → switch (แก้ flow table)",
+    "ถูกต้อง: port status เป็น switch → controller แจ้ง port เปลี่ยน (เช่น link failure)",
+    "features เป็น controller ถาม switch"
+   ]
+  }
+ ],
+ "net-6": [
+  {
+   "q": "UDP ใช้ข้อมูลใดในการ demultiplex segment ไปยัง socket",
+   "c": [
+    "source IP เท่านั้น",
+    "destination port เท่านั้น",
+    "4-tuple",
+    "source port + destination port"
+   ],
+   "a": 1,
+   "why": [
+    "UDP ไม่ได้ดู source IP ในการเลือก socket",
+    "ถูกต้อง: UDP demux ด้วย destination port อย่างเดียว (dest port เดียวกันแม้ต่าง source → socket เดียวกัน)",
+    "4-tuple เป็นของ TCP",
+    "UDP ไม่ใช้ source port เลือก socket"
+   ]
+  },
+  {
+   "q": "Host A ส่ง Seq=42 พร้อมข้อมูล 1 byte ('C') Host B ต้องตอบ ACK เท่าไร",
+   "c": [
+    "42",
+    "43",
+    "79",
+    "80"
+   ],
+   "a": 1,
+   "why": [
+    "ACK ต้องเป็น byte ถัดไปที่คาด ไม่ใช่ byte ที่ได้รับ",
+    "ถูกต้อง: ACK = 42 + 1 byte = 43 (cumulative ACK บอก byte ถัดไปที่อยากได้)",
+    "79 เป็น seq ของ B เอง",
+    "80 เป็น ACK ที่ A ตอบ B ภายหลัง"
+   ]
+  },
+  {
+   "q": "EstimatedRTT = 100 ms, SampleRTT ใหม่ = 120 ms, α = 0.125 EstimatedRTT ใหม่คือ",
+   "c": [
+    "102.5 ms",
+    "110 ms",
+    "117.5 ms",
+    "120 ms"
+   ],
+   "a": 0,
+   "why": [
+    "ถูกต้อง: 0.875×100 + 0.125×120 = 87.5 + 15 = 102.5",
+    "110 คือค่าเฉลี่ยธรรมดา ไม่ใช่ EWMA",
+    "สลับน้ำหนัก (0.125×100 + 0.875×120) ผิด",
+    "ไม่ได้ใช้ค่าล่าสุดตรง ๆ ต้องถ่วงน้ำหนัก"
+   ]
+  },
+  {
+   "q": "TCP Reno cwnd = 12 MSS แล้วได้ triple duplicate ACK ค่า ssthresh และ cwnd ใหม่คือ",
+   "c": [
+    "ssthresh = 6, cwnd = 1",
+    "ssthresh = 6, cwnd = 9",
+    "ssthresh = 12, cwnd = 6",
+    "ssthresh = 6, cwnd = 12"
+   ],
+   "a": 1,
+   "why": [
+    "cwnd = 1 เป็นกรณี timeout (หรือ TCP Tahoe)",
+    "ถูกต้อง: ssthresh = 12/2 = 6, cwnd = ssthresh + 3 = 9 แล้วเข้า fast recovery",
+    "ssthresh ต้องลดเหลือครึ่ง",
+    "cwnd ต้องลดลง"
+   ]
+  },
+  {
+   "q": "ข้อใดอธิบายความต่างของ flow control กับ congestion control ถูกต้อง",
+   "c": [
+    "flow control ป้องกันเครือข่ายแออัด",
+    "flow control ป้องกันผู้ส่งส่งเร็วเกินกว่าที่ผู้รับคนเดียวรับไหว (rwnd)",
+    "congestion control ใช้ field rwnd",
+    "ทั้งสองอย่างเหมือนกัน"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ congestion control",
+    "ถูกต้อง: flow control = ผู้รับคุมผู้ส่งผ่าน rwnd ไม่ให้ buffer ล้น · congestion control = หลายผู้ส่งไม่ท่วมเครือข่าย (cwnd)",
+    "congestion control ใช้ cwnd",
+    "ต่างกันที่ปัญหาและตัวแปรที่ใช้"
+   ]
+  },
+  {
+   "q": "ทำไม 2-way handshake จึงไม่พอสำหรับ TCP",
+   "c": [
+    "เพราะช้าเกินไป",
+    "เพราะอาจเกิด half-open connection และรับข้อมูลซ้ำจาก message เก่าที่ถูก retransmit",
+    "เพราะไม่มี checksum",
+    "เพราะ UDP ใช้ 2-way อยู่แล้ว"
+   ],
+   "a": 1,
+   "why": [
+    "ปัญหาไม่ใช่ความเร็ว",
+    "ถูกต้อง: เครือข่ายมี delay/retransmit/สลับลำดับ req_conn เก่ามาถึงทีหลังทำให้ server เปิด connection โดยไม่มี client หรือรับ data ซ้ำ",
+    "checksum ไม่เกี่ยวกับ handshake",
+    "UDP ไม่มี handshake"
+   ]
+  }
+ ],
+ "net-final": [
+  {
+   "q": "ข้อใดอธิบาย white-box switch ได้ถูกต้องที่สุด",
+   "c": [
+    "ฮาร์ดแวร์ proprietary ที่รวม OS และ protocol จากผู้ผลิตเดียว",
+    "ฮาร์ดแวร์ทั่วไป (commodity) ที่แยกจากซอฟต์แวร์และควบคุมผ่าน open API",
+    "switch ที่ใช้ได้เฉพาะใน LAN ไม่สามารถทำ routing ได้",
+    "อุปกรณ์ที่ทำหน้าที่ NAT เท่านั้น"
+   ],
+   "a": 1,
+   "why": [
+    "นี่คือแบบดั้งเดิม (monolithic, vertically integrated) ซึ่งเป็นสิ่งที่ white-box มาแทน",
+    "ถูก: white-box = commodity hardware + open API แข่งกันที่ซอฟต์แวร์ ควบคุมด้วย SDN",
+    "white-box ทำ generalized forwarding ได้ทั้ง router/switch/firewall/NAT ผ่าน match+action",
+    "NAT เป็นแค่หนึ่งในหน้าที่ที่ match+action ทำได้"
+   ]
+  },
+  {
+   "q": "ใน SDN ที่ใช้ white-box switch, controller คุยกับ switch ผ่านอะไร",
+   "c": [
+    "Northbound API เช่น REST",
+    "Southbound API เช่น OpenFlow",
+    "BGP",
+    "SNMP เท่านั้น"
+   ],
+   "a": 1,
+   "why": [
+    "northbound ใช้คุยกับ network-control apps ด้านบน",
+    "ถูก: southbound (เช่น OpenFlow บน TCP) ใช้คุยกับ switch ด้านล่าง",
+    "BGP เป็น inter-AS routing protocol ไม่ใช่ API ของ controller",
+    "SNMP อยู่ใน communication layer ได้ แต่คำตอบมาตรฐานของ southbound คือ OpenFlow"
+   ]
+  },
+  {
+   "q": "packet ของ flow ใหม่เข้ามาที่ switch แล้วไม่ match กฎใดเลย นอกจากกฎ * → send to controller ลำดับต่อไปคืออะไร",
+   "c": [
+    "switch ส่ง port status ให้ controller",
+    "switch ส่ง packet-in ให้ controller แล้ว controller ติดตั้ง flow entry ด้วย modify-state",
+    "switch flood packet ออกทุก port ทันทีเสมอ",
+    "switch ทิ้ง packet แล้วจบ"
+   ],
+   "a": 1,
+   "why": [
+    "port status ใช้แจ้งว่า port/link เปลี่ยนสถานะ เช่น link เสีย",
+    "ถูก: packet-in → controller คำนวณ → modify-state เพิ่ม flow entry (+ packet-out ปล่อย packet แรก)",
+    "flood เป็น action ของ switch แบบ MAC ที่ไม่รู้ปลายทาง ไม่ใช่สิ่งที่เกิดเมื่อกฎสั่ง send to controller",
+    "กฎสั่ง send to controller ไม่ใช่ drop"
+   ]
+  },
+  {
+   "q": "เหตุผลที่ IPv6 ตัด header checksum ออกคือข้อใด",
+   "c": [
+    "เพราะ IPv6 ไม่มี error เกิดขึ้นเลย",
+    "เพื่อให้ router ไม่ต้องคำนวณ checksum ใหม่ทุก hop และ layer อื่นตรวจ error อยู่แล้ว",
+    "เพราะ checksum ย้ายไปอยู่ใน flow label",
+    "เพื่อให้ header ยาวขึ้น"
+   ],
+   "a": 1,
+   "why": [
+    "error ยังเกิดได้ แต่ link layer และ transport layer ตรวจให้แล้ว",
+    "ถูก: hop limit เปลี่ยนทุก hop ถ้ามี checksum ต้องคำนวณใหม่ทุก router ตัดออกจึงเร็วขึ้น",
+    "flow label ใช้ระบุ flow ไม่เกี่ยวกับ checksum",
+    "การตัด checksum ทำให้ header ประมวลผลง่ายขึ้น ไม่ได้ยาวขึ้น"
+   ]
+  },
+  {
+   "q": "ใน IPv6 ถ้า packet ใหญ่เกิน MTU ของ link ถัดไป router จะทำอย่างไร",
+   "c": [
+    "แบ่ง fragment เหมือน IPv4",
+    "ทิ้ง packet แล้วส่ง ICMPv6 Packet Too Big กลับไปให้ต้นทาง",
+    "บีบอัด packet ให้เล็กลง",
+    "ส่งไปทาง tunnel IPv4 แทน"
+   ],
+   "a": 1,
+   "why": [
+    "IPv6 ไม่ให้ router ทำ fragmentation",
+    "ถูก: ต้นทางต้องลดขนาด packet เอง (router ทำงานน้อยลง)",
+    "IP ไม่มีกลไกบีบอัดแบบนี้",
+    "tunneling ใช้ตอนต้องผ่าน router IPv4 ไม่ได้เกี่ยวกับ MTU"
+   ]
+  },
+  {
+   "q": "field ใดของ IPv6 ใช้แทนที่ options ของ IPv4",
+   "c": [
+    "flow label",
+    "hop limit",
+    "next header",
+    "priority"
+   ],
+   "a": 2,
+   "why": [
+    "flow label ใช้ระบุ packet ใน flow เดียวกัน",
+    "hop limit ทำหน้าที่แทน TTL",
+    "ถูก: next header ชี้ไปยัง extension header หรือ upper-layer protocol ทำให้ header หลักคงที่ 40 bytes",
+    "priority ใช้บอกลำดับความสำคัญ"
+   ]
+  },
+  {
+   "q": "ใน tunneling B(v4/v6) → C(v4) → D(v4) → E(v4/v6) ขณะ packet วิ่งระหว่าง C กับ D, IPv4 header มี src/dst เป็นอะไร",
+   "c": [
+    "src A, dst F",
+    "src B, dst E",
+    "src C, dst D",
+    "src B, dst F"
+   ],
+   "a": 1,
+   "why": [
+    "A, F อยู่ใน IPv6 header ด้านใน",
+    "ถูก: IPv4 ด้านนอกใช้ address ของปลายอุโมงค์ทั้งสองฝั่งคือ B และ E",
+    "C, D เป็นแค่ router ระหว่างทาง",
+    "F เป็นปลายทางของ IPv6 ไม่ใช่ปลายอุโมงค์"
+   ]
+  },
+  {
+   "q": "บริษัทต่อ Internet ผ่าน ISP 2 เจ้า และไม่ต้องการให้ traffic ระหว่าง ISP ทั้งสองวิ่งผ่านบริษัท ควรออกแบบอย่างไร",
+   "c": [
+    "ใช้ OSPF area 0 ครอบทั้ง 2 ISP",
+    "ใช้นโยบาย BGP ไม่ประกาศเส้นทางที่ได้จาก ISP หนึ่งต่อให้อีก ISP",
+    "เพิ่ม link cost ใน OSPF",
+    "ใช้ RIP แทน BGP"
+   ],
+   "a": 1,
+   "why": [
+    "OSPF เป็น intra-AS ใช้กับ ISP ที่เป็น AS อื่นไม่ได้",
+    "ถูก: เหมือนตัวอย่าง dual-homed x ในสไลด์ ไม่ประกาศ route ไปหา C ให้ B จึงไม่กลายเป็นทางผ่าน",
+    "link cost มีผลแค่ภายใน AS",
+    "RIP เป็น intra-AS DV protocol ไม่มี policy ระหว่าง AS"
+   ]
+  },
+  {
+   "q": "จากตาราง Dijkstra ที่ u: หลังเพิ่ม x (D(x)=1) โดย c(x,w)=3 และ D(w) เดิม = 5 ค่า D(w) ใหม่เป็นเท่าไร",
+   "c": [
+    "5",
+    "4",
+    "3",
+    "8"
+   ],
+   "a": 1,
+   "why": [
+    "5 คือค่าเดิมผ่าน link ตรง u–w ซึ่งแพงกว่า",
+    "ถูก: min(5, 1+3) = 4 ผ่าน x",
+    "3 ได้ในขั้นถัดไปตอนเพิ่ม y (2+1)",
+    "8 ไม่ได้มาจากการคำนวณที่ถูกต้อง"
+   ]
+  },
+  {
+   "q": "ข้อใดเป็นเหตุผลที่ควรใช้ link-state (OSPF) ภายใน AS มากกว่า distance vector (RIP)",
+   "c": [
+    "link-state ใช้ทรัพยากรน้อยกว่าเสมอ",
+    "link-state รู้ topology ทั้งหมดและ converge เร็ว ไม่เกิด count-to-infinity",
+    "link-state ส่งข้อมูลเฉพาะเพื่อนบ้าน",
+    "link-state ใช้ Bellman-Ford"
+   ],
+   "a": 1,
+   "why": [
+    "LS ใช้ CPU/memory มากกว่า DV",
+    "ถูก: ทุก router มีแผนที่ครบแล้วรัน Dijkstra เอง ปรับตัวเร็ว",
+    "LS flood ให้ทุก router ใน area ส่วน DV ส่งให้เพื่อนบ้าน",
+    "LS ใช้ Dijkstra ส่วน Bellman-Ford เป็นของ DV"
+   ]
+  }
+ ],
+ "net-q3": [
+  {
+   "q": "MTU = 1200 bytes, IP header 20 bytes ขนาด data สูงสุดต่อ 1 fragment คือเท่าไร",
+   "c": [
+    "1180",
+    "1176",
+    "1184",
+    "1200"
+   ],
+   "a": 1,
+   "why": [
+    "1180/8 = 147.5 ไม่ลงตัว ใช้ไม่ได้",
+    "ถูก: 1180/8 = 147.5 → ปัดลง 147 × 8 = 1176",
+    "ปัดขึ้น 148 × 8 = 1184 แล้ว +20 = 1204 เกิน MTU",
+    "ลืมหัก header 20 bytes"
+   ]
+  },
+  {
+   "q": "Data payload 3200 bytes, MTU 1000 fragment ที่ 4 มี offset เท่าไร",
+   "c": [
+    "369",
+    "366",
+    "244",
+    "272"
+   ],
+   "a": 1,
+   "why": [
+    "มาจาก 2958/8 ซึ่งผิดเพราะชิ้นที่ 4 เริ่มที่ byte 2928",
+    "ถูก: ชิ้นที่ 4 เริ่ม byte 976×3 = 2928 → 2928/8 = 366",
+    "244 เป็น offset ของชิ้นที่ 3",
+    "272 คือขนาด data ของชิ้นที่ 4 ไม่ใช่ offset"
+   ]
+  },
+  {
+   "q": "Data payload 3200 bytes, MTU 1000 fragment สุดท้ายมี Total Length และ MF เท่าไร",
+   "c": [
+    "272, MF=0",
+    "292, MF=0",
+    "292, MF=1",
+    "996, MF=0"
+   ],
+   "a": 1,
+   "why": [
+    "272 คือ data ยังไม่บวก header 20",
+    "ถูก: data 272 + 20 = 292 และเป็นชิ้นสุดท้าย MF = 0",
+    "ชิ้นสุดท้าย MF ต้องเป็น 0",
+    "996 คือ total length ของชิ้นที่เต็ม"
+   ]
+  },
+  {
+   "q": "IP datagram ขนาด 4000 bytes (รวม header) ส่งผ่าน MTU 1500 จะได้กี่ fragment และชิ้นสุดท้ายมี data กี่ bytes",
+   "c": [
+    "3 ชิ้น, data 1040",
+    "3 ชิ้น, data 1020",
+    "2 ชิ้น, data 2520",
+    "4 ชิ้น, data 1020"
+   ],
+   "a": 1,
+   "why": [
+    "1040 คือคำตอบเมื่อ 4000 เป็น data ล้วน (หรือคือ total length ของชิ้นสุดท้าย)",
+    "ถูก: data จริง 3980 → 1480 + 1480 + 1020 = 3 ชิ้น ชิ้นสุดท้าย data 1020 (total 1040)",
+    "ชิ้นละไม่เกิน 1480 จึงต้องมี 3 ชิ้น",
+    "3980/1480 ได้ 2.69 ปัดขึ้นเป็น 3 ไม่ใช่ 4"
+   ]
+  },
+  {
+   "q": "Prefix /27 มี subnet mask และจำนวน IP ที่แจกได้เท่าไร",
+   "c": [
+    "255.255.255.240, 14",
+    "255.255.255.224, 30",
+    "255.255.255.224, 32",
+    "255.255.255.192, 62"
+   ],
+   "a": 1,
+   "why": [
+    "นี่คือ /28",
+    "ถูก: block 2^5 = 32 → mask 256 − 32 = 224, แจกได้ 32 − 2 = 30",
+    "32 คือ IP ทั้งหมด ต้องลบ network และ broadcast",
+    "นี่คือ /26"
+   ]
+  },
+  {
+   "q": "IP 10.10.15.110/28 อยู่ในวงใด",
+   "c": [
+    "10.10.15.96 – 10.10.15.111",
+    "10.10.15.110 – 10.10.15.125",
+    "10.10.15.112 – 10.10.15.127",
+    "10.10.15.64 – 10.10.15.127"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: block 16 → floor(110/16)×16 = 96, broadcast 96+16−1 = 111",
+    "network ต้องหาร block ลงตัว 110 หาร 16 ไม่ลงตัว",
+    "110 ไม่อยู่ในช่วง 112–127",
+    "นี่คือวง /26 ไม่ใช่ /28"
+   ]
+  },
+  {
+   "q": "แบ่ง 192.168.10.0/24 เป็นวง /26 วงที่ 3 มี broadcast address อะไร",
+   "c": [
+    "192.168.10.127",
+    "192.168.10.191",
+    "192.168.10.192",
+    "192.168.10.190"
+   ],
+   "a": 1,
+   "why": [
+    "นี่คือ broadcast ของวงที่ 2",
+    "ถูก: วงที่ 3 เริ่ม .128 → broadcast 128 + 64 − 1 = .191",
+    "นี่คือ network ของวงที่ 4",
+    "นี่คือ last usable ของวงที่ 3"
+   ]
+  },
+  {
+   "q": "VLSM จาก 192.168.1.0/24: Sales 100 เครื่อง และ IT 50 เครื่อง IT ได้ network และ prefix อะไร",
+   "c": [
+    "192.168.1.100/26",
+    "192.168.1.128/26",
+    "192.168.1.128/25",
+    "192.168.1.64/26"
+   ],
+   "a": 1,
+   "why": [
+    "network ต้องต่อจาก broadcast ของ Sales และหาร block ลงตัว",
+    "ถูก: Sales /25 ใช้ .0–.127 → IT 52 IPs → 64 → /26 เริ่ม .128",
+    "IT ต้องการแค่ 52 → 64 IPs = /26 ไม่ใช่ /25",
+    ".64 อยู่ในช่วงของ Sales (.0–.127)"
+   ]
+  }
+ ],
+ "net-ais": [
+  {
+   "q": "เครือข่ายมือถือรุ่นใดเป็นรุ่นแรกที่ใช้ digital voice",
+   "c": [
+    "1G",
+    "2G",
+    "3G",
+    "4G"
+   ],
+   "a": 1,
+   "why": [
+    "1G ยังเป็น analog voice (AMPS, NMT, TACS)",
+    "ถูก: 2G (GSM, D-AMPS, IS-95) เปลี่ยนเป็น digital voice",
+    "3G เน้น mobile data / wireless internet",
+    "4G คือ mobile broadband (LTE)"
+   ]
+  },
+  {
+   "q": "ข้อใดถูกต้องเกี่ยวกับ 5G NSA (Non-Standalone)",
+   "c": [
+    "ใช้ 5G core ใหม่ แยกจาก 4G ทั้งหมด",
+    "5G RAN ทำงานร่วมกับ 4G และใช้ EPC core ร่วม",
+    "ไม่ต้องใช้สถานีฐาน LTE เลย",
+    "ใช้เฉพาะดาวเทียม"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ 5G SA (Standalone)",
+    "ถูก: NSA = new 5G RAN interworking with 4G + common EPC core",
+    "NSA ยังพึ่ง LTE ทั้ง control plane",
+    "ไม่เกี่ยวกับดาวเทียม"
+   ]
+  },
+  {
+   "q": "ภัยแบบ Eavesdropping ใน 5G ถูกป้องกันด้วยอะไร",
+   "c": [
+    "NIA เพื่อ integrity",
+    "NEA เพื่อ confidentiality",
+    "NEA0",
+    "QKD เท่านั้น"
+   ],
+   "a": 1,
+   "why": [
+    "NIA ป้องกัน tampering (ข้อมูลถูกแก้)",
+    "ถูก: ดักฟัง กระทบความลับ ใช้ NEA (NR Encryption Algorithm)",
+    "NEA0 คือ null encryption ไม่เข้ารหัส",
+    "สไลด์ระบุ NEA เป็นกลไกของ 5G"
+   ]
+  },
+  {
+   "q": "128-NEA2 / 128-NIA2 ใช้ cipher พื้นฐานใด",
+   "c": [
+    "SNOW 3G",
+    "ZUC",
+    "AES",
+    "ไม่มี (null)"
+   ],
+   "a": 2,
+   "why": [
+    "SNOW 3G คือเบอร์ 1",
+    "ZUC คือเบอร์ 3",
+    "ถูก: เบอร์ 2 = AES (NEA2 = AES-128-CTR, NIA2 = AES-128-CMAC) มาจาก NIST",
+    "null คือเบอร์ 0"
+   ]
+  },
+  {
+   "q": "ข้อใดถูกเกี่ยวกับ integrity protection ใน 5G",
+   "c": [
+    "ใช้กับ user plane บังคับเสมอ แต่ไม่ใช้กับ signaling",
+    "ใช้กับ signaling plane และ user plane แบบ optional",
+    "ใช้ MAC ยาว 128 bits",
+    "ไม่มีใน 5G"
+   ],
+   "a": 1,
+   "why": [
+    "กลับกัน: signaling ต้องมี ส่วน user plane เป็น optional",
+    "ถูก: NIA ใช้กับ signaling plane messages และ user plane data (optional)",
+    "key 128 bits แต่ MAC 32 bits",
+    "5G มี NIA สำหรับ integrity"
+   ]
+  },
+  {
+   "q": "ดาวเทียมวงโคจรใดอยู่ใกล้โลกที่สุด",
+   "c": [
+    "GEO ~35,785.5 km",
+    "MEO 2,000–20,350 km",
+    "LEO 300–2,000 km",
+    "ทั้งสามเท่ากัน"
+   ],
+   "a": 2,
+   "why": [
+    "GEO ไกลที่สุด",
+    "MEO อยู่กลาง",
+    "ถูก: LEO (Low Earth Orbit) 300–2,000 km เช่น Starlink",
+    "ระยะต่างกันมาก"
+   ]
+  },
+  {
+   "q": "NTN แบบ Regenerative payload ต่างจาก Non-regenerative อย่างไร",
+   "c": [
+    "ดาวเทียมแค่สะท้อนสัญญาณ (bent-pipe)",
+    "มี 5G RAN (on-board processor) อยู่บนดาวเทียม",
+    "ไม่ต้องมี 5G core",
+    "ใช้ได้แค่กับ HAPS"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ non-regenerative / transparent",
+    "ถูก: regenerative = non-transparent มี 5G RAN บนดาวเทียม คุยกับ gateway ด้วย NGc/NGu",
+    "ทั้งสองแบบยังต้องมี 5G CN ภาคพื้น",
+    "ใช้ได้ทั้ง satellite และ HAPS"
+   ]
+  },
+  {
+   "q": "การโกนหัวทาสเขียนข้อความแล้วรอผมขึ้น (499 BCE) เป็นตัวอย่างของอะไร",
+   "c": [
+    "Cryptography",
+    "Steganography",
+    "QKD",
+    "PQC"
+   ],
+   "a": 1,
+   "why": [
+    "cryptography คือแปลงข้อความเป็น cipher text ให้อ่านไม่ออก",
+    "ถูก: steganography = concealment ทำให้ข้อความมองไม่เห็น",
+    "QKD เป็นการแลกกุญแจด้วย photon",
+    "PQC เป็นการเข้ารหัสทนควอนตัม"
+   ]
+  },
+  {
+   "q": "หลักการสำคัญที่ทำให้ QKD ตรวจจับการดักฟังได้คือข้อใด",
+   "c": [
+    "photon เดินทางเร็วเท่าแสง",
+    "การวัด photon จะเปลี่ยนคุณสมบัติของมัน",
+    "ใช้ RSA-2048",
+    "ใช้ classical channel ส่งกุญแจ"
+   ],
+   "a": 1,
+   "why": [
+    "ความเร็วไม่ใช่ประเด็น",
+    "ถูก: any attempt to measure (eavesdrop) the photons changes their properties",
+    "QKD ไม่ใช้ RSA",
+    "classical channel ใช้ประสานงาน/authentication ส่วน key ไปทาง quantum channel"
+   ]
+  },
+  {
+   "q": "ข้อใดเป็นตัวอย่างของ Post Quantum Cryptography (PQC)",
+   "c": [
+    "RSA",
+    "Elliptic Curve Cryptography",
+    "Lattice-based cryptography",
+    "Diffie-Hellman"
+   ],
+   "a": 2,
+   "why": [
+    "RSA อาศัยการแยกตัวประกอบ ถูก Shor's algorithm ถอดได้",
+    "ECC อาศัย discrete log เสี่ยงต่อ quantum",
+    "ถูก: PQC ได้แก่ lattice-based และ code-based",
+    "DH ที่ใช้ใน IKE เสี่ยงต่อ Shor"
+   ]
+  },
+  {
+   "q": "ทำไม VPN แบบ IPsec/IKE จึงเสี่ยงจาก quantum computer",
+   "c": [
+    "เพราะใช้ AES-256",
+    "เพราะใช้ DH/RSA/EC ที่อาศัยความยากของ discrete log/แยกตัวประกอบ ซึ่ง Shor's algorithm แก้ได้",
+    "เพราะไม่มีการเข้ารหัส",
+    "เพราะใช้ QKD"
+   ],
+   "a": 1,
+   "why": [
+    "สไลด์ไม่ได้ระบุ AES เป็นจุดเสี่ยงของตัวอย่างนี้",
+    "ถูก: Shor's algorithm ทำให้การแยกตัวประกอบ/discrete log เป็นไปได้",
+    "IPsec มีการเข้ารหัส",
+    "QKD ไม่ได้เป็นส่วนของ IKE"
+   ]
+  },
+  {
+   "q": "ข้อใดไม่ใช่หลักการสำคัญ 4 ข้อของ quantum mechanics ในสไลด์",
+   "c": [
+    "Superposition",
+    "Entanglement",
+    "Fragmentation",
+    "Decoherence"
+   ],
+   "a": 2,
+   "why": [
+    "superposition เป็น 1 ใน 4",
+    "entanglement เป็น 1 ใน 4",
+    "ถูก: fragmentation เป็นเรื่อง IP ไม่ใช่ quantum (4 ข้อคือ superposition, entanglement, interference, decoherence)",
+    "decoherence เป็น 1 ใน 4"
+   ]
+  }
+ ]
+}
