@@ -160,5 +160,315 @@
     "รูปแบบไม่ถูกต้อง"
    ]
   }
+ ],
+ "nlab-11": [
+  {
+   "q": "PC1 ping PC2 ซึ่งอยู่ switch เดียวกันไม่ได้ สาเหตุที่น่าจะเป็นที่สุดคือ",
+   "c": [
+    "PC1 ตั้ง default gateway ผิด",
+    "PC1 ตั้ง IP อยู่นอกวงที่ต่ออยู่",
+    "R1 G0/1 shutdown",
+    "S2 ไม่มี IP"
+   ],
+   "a": 1,
+   "why": [
+    "ในวงเดียวกันไม่ได้ใช้ gateway เลย gateway ผิดยังคุยในวงได้",
+    "ถูก: ตรงกับปัญหา a ในแล็บ IP ผิดวง = คุยในวงไม่ได้",
+    "G0/1 อยู่อีกวง ไม่เกี่ยวกับ PC1–PC2",
+    "S2 อยู่อีกวง"
+   ]
+  },
+  {
+   "q": "PC4 ping PC3 (วงเดียวกัน) ได้ แต่เครื่องจากวง 192.168.10.0 ติดต่อ PC4 ไม่ได้ น่าจะเป็นเพราะ",
+   "c": [
+    "PC4 IP ผิดวง",
+    "PC4 default gateway ผิด",
+    "S1 ไม่มี IP",
+    "R1 ไม่มี ipv6 unicast-routing"
+   ],
+   "a": 1,
+   "why": [
+    "ถ้า IP ผิดวง PC4 จะคุยกับ PC3 ไม่ได้ด้วย",
+    "ถูก: ในวงผ่านแต่ข้ามวงไม่ผ่าน = gateway ผิด (ปัญหา c)",
+    "S1 อยู่อีกวงและไม่ได้กั้นเส้นทาง",
+    "แล็บนี้เป็น IPv4"
+   ]
+  },
+  {
+   "q": "ต้องการให้ switch S1 ตอบ ping จากวงอื่นได้ ต้องเพิ่มคำสั่งใด",
+   "c": [
+    "ip default-gateway 192.168.10.1",
+    "ip route 0.0.0.0 0.0.0.0 192.168.10.1 บน PC",
+    "default-gateway 192.168.10.1 ที่ interface vlan 1",
+    "no shutdown ที่ G0/0 ของ S1"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: switch ใช้ ip default-gateway ใน global config (ปัญหา d)",
+    "PC ไม่ได้ใช้คำสั่ง IOS",
+    "คำสั่งนี้ไม่ได้อยู่ใน interface config",
+    "ปัญหาคือไม่มี gateway ไม่ใช่พอร์ตปิด"
+   ]
+  },
+  {
+   "q": "S2 ไม่มี IP address ขั้นตอนแก้ที่ถูกต้องคือ",
+   "c": [
+    "interface vlan 1 → ip address 192.168.11.2 255.255.255.0 → no shutdown",
+    "interface fa0/1 → ip address 192.168.11.2",
+    "hostname S2 → copy running-config",
+    "ip default-gateway 192.168.11.2"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: switch ใส่ IP ที่ SVI VLAN 1 และต้อง no shutdown (ปัญหา b)",
+    "พอร์ต layer 2 ของ switch ไม่ใส่ IP",
+    "ไม่ได้ใส่ IP",
+    "default-gateway ต้องเป็น IP ของ router ไม่ใช่ IP ตัวเอง"
+   ]
+  },
+  {
+   "q": "ตามวิธีแก้ปัญหาในแล็บ ควรทดสอบอะไรก่อน",
+   "c": [
+    "remote connectivity ข้ามวงก่อน",
+    "local connectivity ในวงเดียวกันก่อน แล้วค่อยข้ามวง",
+    "ทดสอบทุกอย่างพร้อมกัน",
+    "ไม่ต้องทดสอบ ให้แก้ตามเอกสารเลย"
+   ],
+   "a": 1,
+   "why": [
+    "แล็บให้แก้ปัญหาในวงก่อนค่อยทดสอบข้ามวง",
+    "ถูก: Step 1b local ก่อน แล้ว Step 1c remote",
+    "แล็บเน้นเปลี่ยนและทดสอบทีละอย่าง",
+    "ต้องทดสอบและจดบันทึก"
+   ]
+  },
+  {
+   "q": "คำสั่งใดบน PC (Packet Tracer) ใช้ดู IP, mask และ gateway",
+   "c": [
+    "show ip interface brief",
+    "ipconfig",
+    "show running-config",
+    "tracert"
+   ],
+   "a": 1,
+   "why": [
+    "เป็นคำสั่ง IOS บน router/switch",
+    "ถูก: ipconfig แสดงค่า IP ของ PC",
+    "เป็นคำสั่ง IOS",
+    "tracert ใช้ดูเส้นทาง"
+   ]
+  }
+ ],
+ "nlab-12": [
+  {
+   "q": "tracert จาก PC1 ไป PC3 ไปถึงแค่ 10.10.1.97 แล้ว timed out หมายความว่า",
+   "c": [
+    "PC1 ตั้ง gateway ผิด",
+    "เส้นทางไปได้ถึง R1 แล้วขาดหลังจากนั้น ให้ตรวจอุปกรณ์ถัดไป",
+    "PC3 ปิดเครื่อง",
+    "DNS ผิด"
+   ],
+   "a": 1,
+   "why": [
+    "ถ้า gateway ผิดจะไม่ถึง 10.10.1.97 ซึ่งเป็น gateway",
+    "ถูก: hop สุดท้ายที่ตอบคือ R1 G0/1 ปัญหาอยู่ระหว่าง R1 กับข้างหน้า (R2)",
+    "trace จะไปได้ไกลกว่า R1 ถ้าเส้นทาง router ปกติ",
+    "แล็บนี้ไม่เกี่ยวกับ DNS"
+   ]
+  },
+  {
+   "q": "ทำไม R2 S0/0/0 ที่ตั้งเป็น 10.10.1.2 จึงเป็นปัญหา",
+   "c": [
+    "เพราะ 10.10.1.2 เป็น broadcast",
+    "เพราะลิงก์ R1–R2 คือ 10.10.1.4/30 แต่ .2 อยู่คนละวงกับ R1 (10.10.1.6)",
+    "เพราะ serial ต้องใช้ IPv6",
+    "เพราะ mask ต้องเป็น /24"
+   ],
+   "a": 1,
+   "why": [
+    "broadcast ของ 10.10.1.0/30 คือ .3",
+    "ถูก: /30 ช่วง .4–.7 ใช้ได้ .5 กับ .6 จึงต้องตั้ง R2 = 10.10.1.5",
+    "serial ใช้ IPv4 ได้",
+    "ลิงก์ router–router ใช้ /30"
+   ]
+  },
+  {
+   "q": "PC2 trace ไปถึง 2001:db8:1:3::2 (R3) แต่ PC4 trace ไม่ถึง IPv6 ใดเลย ปัญหาน่าจะอยู่ที่",
+   "c": [
+    "R2 S0/0/1",
+    "PC4 default gateway",
+    "R1 G0/0",
+    "สาย serial R1–R2"
+   ],
+   "a": 1,
+   "why": [
+    "R2 ปกติเพราะ PC2 ผ่านไปถึง R3 ได้",
+    "ถูก: PC4 ออกจากเครื่องไม่ได้แม้ hop แรก แก้เป็น fe80::3",
+    "ฝั่ง R1 ปกติ",
+    "เส้นทางระหว่าง router ทำงาน"
+   ]
+  },
+  {
+   "q": "ใน show ip route ของ R1 รายการ 10.10.1.6/32 ที่มีรหัส L หมายถึงอะไร",
+   "c": [
+    "เครือข่ายที่เรียนรู้จาก OSPF",
+    "local route คือ IP ของ interface R1 เอง",
+    "default route",
+    "เส้นทางที่ถูก block"
+   ],
+   "a": 1,
+   "why": [
+    "OSPF ใช้รหัส O",
+    "ถูก: L = local host route ของ interface (S0/0/1 = 10.10.1.6)",
+    "default route แสดงเป็น 0.0.0.0/0",
+    "ไม่มีความหมายแบบนั้น"
+   ]
+  },
+  {
+   "q": "ความแตกต่างระหว่าง ping กับ tracert คือ",
+   "c": [
+    "ping บอกทุก hop ส่วน tracert บอกแค่ถึง/ไม่ถึง",
+    "ping บอกแค่ถึง/ไม่ถึง ส่วน tracert บอกว่าไปถึง hop ไหนแล้วขาด",
+    "ใช้ได้เฉพาะ IPv6",
+    "ไม่ต่างกัน"
+   ],
+   "a": 1,
+   "why": [
+    "กลับกัน",
+    "ถูก: ping ไม่บอกตำแหน่งปัญหา tracert แสดงทุก hop",
+    "ใช้ได้ทั้ง IPv4 และ IPv6",
+    "ต่างกันชัดเจน"
+   ]
+  },
+  {
+   "q": "subnet mask 255.255.255.224 คือ prefix เท่าไร และ block เท่าไร",
+   "c": [
+    "/26, 64",
+    "/27, 32",
+    "/28, 16",
+    "/30, 4"
+   ],
+   "a": 1,
+   "why": [
+    "/26 = .192",
+    "ถูก: 256 − 224 = 32 → /27 (LAN ของ PC1 = 10.10.1.96/27)",
+    "/28 = .240",
+    "/30 = .252"
+   ]
+  }
+ ],
+ "nlab-13": [
+  {
+   "q": "DNS ในแล็บนี้ใช้ transport protocol และ port อะไร",
+   "c": [
+    "TCP 53",
+    "UDP 53",
+    "TCP 80",
+    "UDP 25"
+   ],
+   "a": 1,
+   "why": [
+    "DNS query ในแล็บเป็น UDP",
+    "ถูก: DNS ใช้ UDP port 53 ไม่มี seq/ack",
+    "80 คือ HTTP",
+    "25 คือ SMTP และเป็น TCP"
+   ]
+  },
+  {
+   "q": "ทำไม HTTP PDU ก้อนแรกถึงล่าช้า",
+   "c": [
+    "เพราะ UDP ต้องรอ ACK",
+    "เพราะ TCP ต้องสร้าง connection (three-way handshake) ก่อน",
+    "เพราะ DNS ต้องตอบก่อนเสมอ",
+    "เพราะ server ปิดอยู่"
+   ],
+   "a": 1,
+   "why": [
+    "HTTP ใช้ TCP ไม่ใช่ UDP",
+    "ถูก: ต้อง SYN → SYN+ACK → ACK ก่อนส่ง HTTP data",
+    "ในแล็บพิมพ์ IP ตรง ไม่ต้องใช้ DNS",
+    "server ทำงานปกติ"
+   ]
+  },
+  {
+   "q": "ลำดับ three-way handshake ของ TCP คือ",
+   "c": [
+    "SYN → ACK → FIN",
+    "SYN → SYN+ACK → ACK",
+    "ACK → SYN → PSH",
+    "PSH → ACK → SYN"
+   ],
+   "a": 1,
+   "why": [
+    "FIN ใช้ปิด connection",
+    "ถูก: ตามที่เห็นใน FTP และ SMTP",
+    "ลำดับไม่ถูก",
+    "PSH ใช้ตอนส่งข้อมูล"
+   ]
+  },
+  {
+   "q": "TCP port 25 และ 110 คือ protocol ใด",
+   "c": [
+    "HTTP และ FTP",
+    "SMTP และ POP3",
+    "DNS และ SMTP",
+    "POP3 และ SMTP"
+   ],
+   "a": 1,
+   "why": [
+    "HTTP 80, FTP 21",
+    "ถูก: SMTP 25 (ส่งอีเมล), POP3 110 (ดึงอีเมล)",
+    "DNS 53",
+    "สลับลำดับ: 25 = SMTP, 110 = POP3"
+   ]
+  },
+  {
+   "q": "ข้อใดถูกต้องเกี่ยวกับ UDP ที่เห็นใน DNS PDU",
+   "c": [
+    "มี sequence และ acknowledgement number",
+    "ไม่มี sequence และ acknowledgement number เพราะไม่สร้าง connection",
+    "มี three-way handshake",
+    "รับประกันการส่ง"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ TCP",
+    "ถูก: UDP connectionless จึงไม่ reliable",
+    "UDP ไม่มี handshake",
+    "UDP ไม่รับประกัน"
+   ]
+  },
+  {
+   "q": "หลายบทสนทนา (HTTP, FTP, DNS, Email) ใช้สายเดียวกันพร้อมกันได้ เรียกว่าอะไร และอะไรทำให้ข้อมูลไปถึง application ถูกตัว",
+   "c": [
+    "Fragmentation / IP address",
+    "Conversation multiplexing / port number",
+    "Routing / MAC address",
+    "Encapsulation / TTL"
+   ],
+   "a": 1,
+   "why": [
+    "fragmentation คือการหั่น packet",
+    "ถูก: multiplexing และใช้ port number แยก application",
+    "routing คือหาเส้นทาง",
+    "ไม่ใช่คำตอบของคำถามในแล็บ"
+   ]
+  },
+  {
+   "q": "เมื่อ server ตอบกลับ client ค่า port ใน segment เป็นอย่างไร",
+   "c": [
+    "source และ destination port เหมือนเดิม",
+    "source และ destination port สลับกัน",
+    "ใช้ port 0 ทั้งคู่",
+    "ใช้ port 80 ทั้งคู่"
+   ],
+   "a": 1,
+   "why": [
+    "ต้องสลับเพื่อส่งกลับ",
+    "ถูก: server ใช้ well-known port เป็น source และ port ชั่วคราวของ client เป็น destination",
+    "ไม่มีการใช้ port 0",
+    "client ใช้ port ชั่วคราว"
+   ]
+  }
  ]
 }
