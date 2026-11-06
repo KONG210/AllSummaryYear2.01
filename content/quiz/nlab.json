@@ -1,0 +1,164 @@
+{
+ "nlab-10": [
+  {
+   "q": "หลังตั้ง IP ที่ interface G0/0 ของ router แล้ว show ip interface brief ขึ้น administratively down ลืมคำสั่งอะไร",
+   "c": [
+    "ip routing",
+    "no shutdown",
+    "login",
+    "copy running-config startup-config"
+   ],
+   "a": 1,
+   "why": [
+    "ip routing ไม่เกี่ยวกับสถานะ interface",
+    "ถูก: interface ของ router ปิดอยู่ตั้งต้น ต้องสั่ง no shutdown",
+    "login ใช้ที่ line ให้ถามรหัส",
+    "การบันทึกไม่ทำให้ interface up"
+   ]
+  },
+  {
+   "q": "คำสั่งใดตั้งรหัสผ่าน privileged EXEC แบบเข้ารหัส (hash)",
+   "c": [
+    "enable password",
+    "enable secret",
+    "service password-encryption",
+    "password"
+   ],
+   "a": 1,
+   "why": [
+    "enable password เก็บเป็น plaintext",
+    "ถูก: enable secret เก็บแบบ hash เสมอ",
+    "service password-encryption เข้ารหัสรหัสอื่นที่เป็น plaintext ไม่ได้ตั้งรหัสใหม่",
+    "password ใช้ใน line console/vty"
+   ]
+  },
+  {
+   "q": "ตั้ง password ที่ line console 0 แล้ว แต่ต่อเข้าไปไม่ถูกถามรหัส ลืมอะไร",
+   "c": [
+    "login",
+    "no shutdown",
+    "enable secret",
+    "banner motd"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: ต้องสั่ง login ใน line ถึงจะบังคับถามรหัส",
+    "no shutdown ใช้กับ interface",
+    "enable secret คือรหัสเข้า privileged",
+    "banner แค่แสดงข้อความ"
+   ]
+  },
+  {
+   "q": "PC ใน LAN ฝั่ง G0/0 ping IPv6 ไปหา PC ฝั่ง G0/1 ไม่ได้ แต่ IPv4 ได้ สาเหตุที่น่าจะเป็นที่สุดคือ",
+   "c": [
+    "ลืม ipv6 unicast-routing บน router",
+    "ลืม ip default-gateway บน switch",
+    "ลืม service password-encryption",
+    "subnet mask ผิด"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: ไม่เปิด ipv6 unicast-routing router จะไม่ส่งต่อ IPv6 ข้ามวง",
+    "default-gateway ของ switch มีผลกับการจัดการ switch เท่านั้น",
+    "การเข้ารหัสรหัสผ่านไม่เกี่ยวกับการส่งข้อมูล",
+    "ถ้า mask ผิด IPv4 ก็น่าจะมีปัญหาด้วย"
+   ]
+  },
+  {
+   "q": "Student-3 (128.107.30.25/24) ต้องตั้ง Default Gateway IPv4 เป็นอะไร",
+   "c": [
+    "128.107.20.1",
+    "128.107.30.1",
+    "128.107.30.15",
+    "FE80::1"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ gateway ของวง .20",
+    "ถูก: gateway = IP ของ router ขา G0/1 ที่อยู่วงเดียวกัน",
+    "นั่นคือ IP ของ switch Class-B",
+    "FE80::1 คือ gateway ฝั่ง IPv6"
+   ]
+  },
+  {
+   "q": "ทำไม host ใช้ FE80::1 เป็น IPv6 gateway ได้ทั้งสองวง",
+   "c": [
+    "เพราะเป็น global unicast ที่ใช้ได้ทั้งอินเทอร์เน็ต",
+    "เพราะ link-local ใช้ได้เฉพาะในลิงก์ของตัวเอง จึงตั้งซ้ำกันคนละ interface ได้",
+    "เพราะเป็น broadcast address",
+    "เพราะ switch แปลงให้"
+   ],
+   "a": 1,
+   "why": [
+    "FE80:: เป็น link-local ไม่ใช่ global",
+    "ถูก: ทั้ง G0/0 และ G0/1 ตั้ง fe80::1 link-local ได้เพราะอยู่คนละลิงก์",
+    "IPv6 ไม่มี broadcast",
+    "switch ไม่ได้แปลง address"
+   ]
+  },
+  {
+   "q": "ต้องการให้ switch Class-B ถูกจัดการ (ping/telnet) จากวงอื่นได้ ต้องตั้งอะไร",
+   "c": [
+    "ip address ที่ interface vlan 1 และ ip default-gateway 128.107.30.1",
+    "ipv6 unicast-routing",
+    "ip address ที่พอร์ต FastEthernet0/1",
+    "hostname Class-B"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: switch ใช้ SVI (vlan 1) เป็น IP จัดการ และต้องมี default-gateway เพื่อตอบกลับข้ามวง",
+    "switch ในแล็บนี้ไม่ได้ทำ IPv6 routing",
+    "พอร์ตของ switch layer 2 ไม่ใส่ IP",
+    "hostname แค่ตั้งชื่อ"
+   ]
+  },
+  {
+   "q": "คำสั่งใดบันทึก config ไม่ให้หายเมื่อปิดเครื่อง",
+   "c": [
+    "copy startup-config running-config",
+    "copy running-config startup-config",
+    "show running-config",
+    "write erase"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือโหลด config ที่บันทึกไว้มาใช้",
+    "ถูก: copy จาก RAM (running) ไปเก็บใน NVRAM (startup)",
+    "แค่แสดง config",
+    "ลบ startup-config"
+   ]
+  },
+  {
+   "q": "คำสั่ง service password-encryption ทำอะไร",
+   "c": [
+    "ตั้งรหัสผ่านใหม่ให้ทุก line",
+    "เข้ารหัสรหัสผ่านที่เก็บเป็น plaintext ใน config เช่น console และ vty",
+    "เปิด SSH",
+    "ลบรหัสผ่านทั้งหมด"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่ได้ตั้งรหัสใหม่",
+    "ถูก: ทำให้รหัสใน running-config ไม่เป็นข้อความที่อ่านได้",
+    "SSH ต้องตั้งค่าอีกชุด",
+    "ไม่ได้ลบอะไร"
+   ]
+  },
+  {
+   "q": "คำสั่งใดใส่ IPv4 ให้ interface ของ router ได้ถูกรูปแบบ",
+   "c": [
+    "ip address 128.107.20.1/24",
+    "ip address 128.107.20.1 255.255.255.0",
+    "ipv4 address 128.107.20.1 255.255.255.0",
+    "ip 128.107.20.1 mask 24"
+   ],
+   "a": 1,
+   "why": [
+    "IOS ไม่รับ /24 ในคำสั่ง ip address (แบบนั้นใช้กับ IPv6)",
+    "ถูก: ip address <IP> <subnet mask แบบเต็ม>",
+    "ไม่มีคำสั่ง ipv4 address",
+    "รูปแบบไม่ถูกต้อง"
+   ]
+  }
+ ]
+}
