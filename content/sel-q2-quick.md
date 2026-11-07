@@ -1,0 +1,28 @@
+# Quiz 2 SE Lab · สรุปก่อนสอบ
+
+> 📌 Closed-book · Sec 2: **อ. 10 พ.ย. 10.45–12.15** · Sec 1: พ. 11 พ.ย. 11.15–12.45 · DFD + Git + Unit test
+
+## DFD
+| สัญลักษณ์ (Yourdon) | ความหมาย | ชื่อ |
+|---|---|---|
+| วงกลม | Process | กริยา + กรรม (1.0 Calculate Bill) |
+| สี่เหลี่ยม | External entity | คำนาม |
+| กล่องเปิด / เส้นคู่ | Data store | คำนาม (D1 Orders) |
+| ลูกศร | Data flow | คำนาม (ต้องมีชื่อ) |
+
+- Context = process 0 ตัวเดียว ไม่มี data store · Level 0 = 1.0, 2.0 … · Level 1 = 2.1, 2.2 …
+- **Black hole** = เข้าอย่างเดียว · **Miracle** = ออกอย่างเดียว · **Gray hole** = input ไม่พอสร้าง output
+- ❌ entity→entity · ❌ entity↔store · ❌ store→store · ❌ flow ไม่มีชื่อ · ❌ process ชื่อเป็นคำนาม
+- **Balancing:** flow/entity ของแม่ = ของลูกรวมกัน (ห้ามมีของใหม่โผล่)
+- ทุก flow ต้องมี process ที่ปลายใดปลายหนึ่ง
+
+## Git
+- `init` · `status` · `add` (→ staging) · `commit -m` (→ local) · `log` · `diff`
+- `clone` · `push` · **`fetch` = ดึงมาดู ยังไม่ merge** · **`pull` = fetch + merge**
+- `branch <n>` · `checkout <n>` · `push --set-upstream origin <n>` · `branch -a` · `fetch -p` · `branch -vv` · `branch -d`
+- untracked → staged → committed → modified
+- ไฟล์ใน branch หนึ่งไม่โผล่ใน branch อื่นจนกว่า merge
+- PR: push branch → PR → review/comment → แก้ + push → merge → ลบ branch
+
+## Unit test
+⚠️ รอไฟล์ · ทวน Lab 10 Testing

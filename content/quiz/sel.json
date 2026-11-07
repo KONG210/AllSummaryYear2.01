@@ -1,18 +1,490 @@
 {
-"sel-8":[
-{"q":"จาก Lab 8 ข้อใดเป็นลักษณะของ prompt ที่ดี","c":["สั้นที่สุดเท่าที่ทำได้","ชัดเจน เป็นขั้นตอน ระบุรายละเอียดเทคนิคและข้อจำกัด","ใช้คำกว้าง ๆ ให้ AI ตัดสินใจเอง","ภาษาอังกฤษเท่านั้น"],"a":1,"why":["สั้นเกินมักกำกวม ต้องแก้หลายรอบ","ถูกต้อง: เช่น ฟีเจอร์ CSV ต้องระบุ UTF-8 BOM, CRLF, การ escape จึงได้ผลถูก","คำกว้างทำให้ AI เข้าใจผิด","ภาษาไทยก็ใช้ได้ (ใน lab คุณใช้ prompt ภาษาไทย)"]},
-{"q":"ทำไมไม่ควรไว้ใจระบบที่ AI สร้างโดยไม่ตรวจสอบ","c":["AI เขียนโค้ดไม่ได้","AI ทำตามคำสั่งแต่อาจไม่คิดเรื่องความปลอดภัย/ความเสี่ยง ต้อง review และ test","AI ช้าเกินไป","AI ใช้ได้แค่ทำ UI"],"a":1,"why":["AI เขียนโค้ดได้ แต่คุณภาพไม่รับประกัน","ถูกต้อง: เช่น CSV injection หรือช่องโหว่ข้อมูลรั่ว AI จะไม่ป้องกันถ้าไม่สั่ง จึงต้องตรวจ","ความเร็วไม่ใช่เหตุผล","AI ทำได้มากกว่า UI"]},
-{"q":"ข้อจำกัดของ vibe coding ตาม L10 คือข้อใด","c":["ต้องมีพื้นเขียนโปรแกรมสูง","logic ซับซ้อนทำยาก ผูกกับ platform และพึ่ง AI มากเกินไป","ช้ากว่าเขียนเองเสมอ","ใช้ได้แค่ภาษา Java"],"a":1,"why":["vibe coding barrier ต่ำ ไม่ต้องมีพื้นสูง","ถูกต้อง: ข้อจำกัดตามสไลด์ L10","ข้อดีคือ interactive และเร็ว","ไม่ได้จำกัดภาษา"]}
-],
-"sel-9":[
-{"q":"push branch ใหม่ dev_me ขึ้น GitHub ครั้งแรกใช้คำสั่งใด","c":["git push","git push --set-upstream origin dev_me","git branch -a","git fetch -p"],"a":1,"why":["branch ใหม่ยังไม่มี upstream push เฉย ๆ จะไม่รู้ว่าส่งไปที่ไหน","ถูกต้อง: --set-upstream (-u) ผูก branch local กับ remote ครั้งแรก","branch -a แค่แสดง branch ทั้งหมด","fetch -p ลบการอ้างอิง branch remote ที่ถูกลบ"]},
-{"q":"git fetch ต่างจาก git pull อย่างไร","c":["เหมือนกันทุกอย่าง","fetch ดึงข้อมูลจาก remote แต่ยังไม่ merge, pull = fetch + merge","fetch ส่งขึ้น remote","pull ลบ branch"],"a":1,"why":["ต่างกันที่การ merge","ถูกต้อง: fetch แค่ดึงมาดู, pull ดึงแล้ว merge เข้า branch ปัจจุบัน","การส่งขึ้นคือ push","pull ไม่ลบ branch"]},
-{"q":"สร้างไฟล์และ commit ใน branch dev_me แล้ว git checkout master จะเห็นไฟล์นั้นไหม","c":["เห็น เพราะ repo เดียวกัน","ไม่เห็น จนกว่าจะ merge เข้า master","เห็นแต่แก้ไม่ได้","ไฟล์ถูกลบถาวร"],"a":1,"why":["แต่ละ branch มีสถานะไฟล์ของตัวเอง","ถูกต้อง: lab ให้ลอง ls เทียบกัน ไฟล์ feature ไม่อยู่ใน master จนกว่าจะ merge (ผ่าน pull request)","ไม่ใช่สิทธิ์การแก้","ไฟล์ยังอยู่ใน branch dev_me"]},
-{"q":"ใน Lab 9 ขั้นตอนใดต้องทำก่อนกด Merge pull request","c":["ลบ branch","ทุกคนในทีม review และ comment จนพอใจ","git init ใหม่","สร้าง repo ใหม่"],"a":1,"why":["ลบ branch ทำหลัง merge","ถูกต้อง: ทุกคนต้อง comment อย่างน้อย 1 ครั้งในทุก PR และ review ซ้ำหลังแก้ ก่อน merge","ไม่เกี่ยว","ไม่เกี่ยว"]}
-],
-"sel-10":[
-{"q":"โค้ด calculate_total_price มี for, if age < 12, elif age < 60 จำนวน independent path คือ","c":["2","3","4","5"],"a":2,"why":["นับ decision ไม่ครบ","ลืมบวก 1","ถูกต้อง: decision 3 ตัว (for, if, elif) + 1 = 4 (else ไม่นับเป็น decision)","else ไม่นับเป็น decision แยก"]},
-{"q":"test case ใดทำให้รัน path ที่ไม่เข้า loop เลย","c":["[5]","[30]","[]","[70]"],"a":2,"why":["[5] เข้า loop และไป branch age < 12","[30] เข้า loop ไป branch 12 ≤ age < 60","ถูกต้อง: list ว่าง for ไม่ทำงาน ได้ S1–C1–S6 คืนค่า 0","[70] เข้า loop ไป else"]},
-{"q":"ช่องโหว่ใดชัดที่สุดของโค้ดนี้ในฐานะ tester","c":["ใช้ for แทน while","ไม่ตรวจ input เช่น อายุติดลบ −5 จะได้ราคา 50","ตั้งชื่อฟังก์ชันยาว","return ค่า total"],"a":1,"why":["เลือก loop แบบไหนไม่ใช่ช่องโหว่","ถูกต้อง: −5 < 12 เป็นจริงจึงคิด 50 บาท ทั้งที่อายุติดลบเป็นไปไม่ได้","ชื่อยาวไม่ใช่ช่องโหว่","การ return ถูกต้องแล้ว"]}
-]
+ "sel-8": [
+  {
+   "q": "จาก Lab 8 ข้อใดเป็นลักษณะของ prompt ที่ดี",
+   "c": [
+    "สั้นที่สุดเท่าที่ทำได้",
+    "ชัดเจน เป็นขั้นตอน ระบุรายละเอียดเทคนิคและข้อจำกัด",
+    "ใช้คำกว้าง ๆ ให้ AI ตัดสินใจเอง",
+    "ภาษาอังกฤษเท่านั้น"
+   ],
+   "a": 1,
+   "why": [
+    "สั้นเกินมักกำกวม ต้องแก้หลายรอบ",
+    "ถูกต้อง: เช่น ฟีเจอร์ CSV ต้องระบุ UTF-8 BOM, CRLF, การ escape จึงได้ผลถูก",
+    "คำกว้างทำให้ AI เข้าใจผิด",
+    "ภาษาไทยก็ใช้ได้ (ใน lab คุณใช้ prompt ภาษาไทย)"
+   ]
+  },
+  {
+   "q": "ทำไมไม่ควรไว้ใจระบบที่ AI สร้างโดยไม่ตรวจสอบ",
+   "c": [
+    "AI เขียนโค้ดไม่ได้",
+    "AI ทำตามคำสั่งแต่อาจไม่คิดเรื่องความปลอดภัย/ความเสี่ยง ต้อง review และ test",
+    "AI ช้าเกินไป",
+    "AI ใช้ได้แค่ทำ UI"
+   ],
+   "a": 1,
+   "why": [
+    "AI เขียนโค้ดได้ แต่คุณภาพไม่รับประกัน",
+    "ถูกต้อง: เช่น CSV injection หรือช่องโหว่ข้อมูลรั่ว AI จะไม่ป้องกันถ้าไม่สั่ง จึงต้องตรวจ",
+    "ความเร็วไม่ใช่เหตุผล",
+    "AI ทำได้มากกว่า UI"
+   ]
+  },
+  {
+   "q": "ข้อจำกัดของ vibe coding ตาม L10 คือข้อใด",
+   "c": [
+    "ต้องมีพื้นเขียนโปรแกรมสูง",
+    "logic ซับซ้อนทำยาก ผูกกับ platform และพึ่ง AI มากเกินไป",
+    "ช้ากว่าเขียนเองเสมอ",
+    "ใช้ได้แค่ภาษา Java"
+   ],
+   "a": 1,
+   "why": [
+    "vibe coding barrier ต่ำ ไม่ต้องมีพื้นสูง",
+    "ถูกต้อง: ข้อจำกัดตามสไลด์ L10",
+    "ข้อดีคือ interactive และเร็ว",
+    "ไม่ได้จำกัดภาษา"
+   ]
+  }
+ ],
+ "sel-9": [
+  {
+   "q": "push branch ใหม่ dev_me ขึ้น GitHub ครั้งแรกใช้คำสั่งใด",
+   "c": [
+    "git push",
+    "git push --set-upstream origin dev_me",
+    "git branch -a",
+    "git fetch -p"
+   ],
+   "a": 1,
+   "why": [
+    "branch ใหม่ยังไม่มี upstream push เฉย ๆ จะไม่รู้ว่าส่งไปที่ไหน",
+    "ถูกต้อง: --set-upstream (-u) ผูก branch local กับ remote ครั้งแรก",
+    "branch -a แค่แสดง branch ทั้งหมด",
+    "fetch -p ลบการอ้างอิง branch remote ที่ถูกลบ"
+   ]
+  },
+  {
+   "q": "git fetch ต่างจาก git pull อย่างไร",
+   "c": [
+    "เหมือนกันทุกอย่าง",
+    "fetch ดึงข้อมูลจาก remote แต่ยังไม่ merge, pull = fetch + merge",
+    "fetch ส่งขึ้น remote",
+    "pull ลบ branch"
+   ],
+   "a": 1,
+   "why": [
+    "ต่างกันที่การ merge",
+    "ถูกต้อง: fetch แค่ดึงมาดู, pull ดึงแล้ว merge เข้า branch ปัจจุบัน",
+    "การส่งขึ้นคือ push",
+    "pull ไม่ลบ branch"
+   ]
+  },
+  {
+   "q": "สร้างไฟล์และ commit ใน branch dev_me แล้ว git checkout master จะเห็นไฟล์นั้นไหม",
+   "c": [
+    "เห็น เพราะ repo เดียวกัน",
+    "ไม่เห็น จนกว่าจะ merge เข้า master",
+    "เห็นแต่แก้ไม่ได้",
+    "ไฟล์ถูกลบถาวร"
+   ],
+   "a": 1,
+   "why": [
+    "แต่ละ branch มีสถานะไฟล์ของตัวเอง",
+    "ถูกต้อง: lab ให้ลอง ls เทียบกัน ไฟล์ feature ไม่อยู่ใน master จนกว่าจะ merge (ผ่าน pull request)",
+    "ไม่ใช่สิทธิ์การแก้",
+    "ไฟล์ยังอยู่ใน branch dev_me"
+   ]
+  },
+  {
+   "q": "ใน Lab 9 ขั้นตอนใดต้องทำก่อนกด Merge pull request",
+   "c": [
+    "ลบ branch",
+    "ทุกคนในทีม review และ comment จนพอใจ",
+    "git init ใหม่",
+    "สร้าง repo ใหม่"
+   ],
+   "a": 1,
+   "why": [
+    "ลบ branch ทำหลัง merge",
+    "ถูกต้อง: ทุกคนต้อง comment อย่างน้อย 1 ครั้งในทุก PR และ review ซ้ำหลังแก้ ก่อน merge",
+    "ไม่เกี่ยว",
+    "ไม่เกี่ยว"
+   ]
+  }
+ ],
+ "sel-10": [
+  {
+   "q": "โค้ด calculate_total_price มี for, if age < 12, elif age < 60 จำนวน independent path คือ",
+   "c": [
+    "2",
+    "3",
+    "4",
+    "5"
+   ],
+   "a": 2,
+   "why": [
+    "นับ decision ไม่ครบ",
+    "ลืมบวก 1",
+    "ถูกต้อง: decision 3 ตัว (for, if, elif) + 1 = 4 (else ไม่นับเป็น decision)",
+    "else ไม่นับเป็น decision แยก"
+   ]
+  },
+  {
+   "q": "test case ใดทำให้รัน path ที่ไม่เข้า loop เลย",
+   "c": [
+    "[5]",
+    "[30]",
+    "[]",
+    "[70]"
+   ],
+   "a": 2,
+   "why": [
+    "[5] เข้า loop และไป branch age < 12",
+    "[30] เข้า loop ไป branch 12 ≤ age < 60",
+    "ถูกต้อง: list ว่าง for ไม่ทำงาน ได้ S1–C1–S6 คืนค่า 0",
+    "[70] เข้า loop ไป else"
+   ]
+  },
+  {
+   "q": "ช่องโหว่ใดชัดที่สุดของโค้ดนี้ในฐานะ tester",
+   "c": [
+    "ใช้ for แทน while",
+    "ไม่ตรวจ input เช่น อายุติดลบ −5 จะได้ราคา 50",
+    "ตั้งชื่อฟังก์ชันยาว",
+    "return ค่า total"
+   ],
+   "a": 1,
+   "why": [
+    "เลือก loop แบบไหนไม่ใช่ช่องโหว่",
+    "ถูกต้อง: −5 < 12 เป็นจริงจึงคิด 50 บาท ทั้งที่อายุติดลบเป็นไปไม่ได้",
+    "ชื่อยาวไม่ใช่ช่องโหว่",
+    "การ return ถูกต้องแล้ว"
+   ]
+  }
+ ],
+ "sel-q2": [
+  {
+   "q": "process ที่มีข้อมูลเข้าแต่ไม่มีข้อมูลออกเรียกว่าอะไร",
+   "c": [
+    "Miracle",
+    "Black hole",
+    "Gray hole",
+    "Data sink"
+   ],
+   "a": 1,
+   "why": [
+    "miracle คือออกอย่างเดียวไม่มีเข้า",
+    "ถูก: black hole ข้อมูลเข้าไปแล้วหายไป",
+    "gray hole คือ input ไม่พอสร้าง output",
+    "ไม่ใช่ศัพท์ของข้อผิดพลาดนี้"
+   ]
+  },
+  {
+   "q": "process ที่มี output แต่ไม่มี input เรียกว่าอะไร",
+   "c": [
+    "Black hole",
+    "Miracle (spontaneous generation)",
+    "Gray hole",
+    "Balancing error"
+   ],
+   "a": 1,
+   "why": [
+    "black hole คือเข้าอย่างเดียว",
+    "ถูก: สร้างข้อมูลจากความว่างเปล่า",
+    "gray hole มี input แต่ไม่พอ",
+    "balancing เป็นเรื่องระหว่างระดับ"
+   ]
+  },
+  {
+   "q": "process 'Calculate Grade' รับเฉพาะ 'student ID' แล้วส่ง 'grade report' ออก เป็นข้อผิดพลาดแบบใด",
+   "c": [
+    "Black hole",
+    "Miracle",
+    "Gray hole",
+    "ไม่ผิด"
+   ],
+   "a": 2,
+   "why": [
+    "มี output อยู่",
+    "มี input อยู่",
+    "ถูก: input ไม่พอที่จะคำนวณเกรด (ไม่มีคะแนน)",
+    "input ไม่เพียงพอต่อ output"
+   ]
+  },
+  {
+   "q": "ข้อใดเป็น data flow ที่ถูกต้องใน DFD",
+   "c": [
+    "Customer → Supplier",
+    "D1 Orders → D2 Invoices",
+    "Customer → 1.0 Place Order",
+    "Customer → D1 Orders"
+   ],
+   "a": 2,
+   "why": [
+    "entity ไป entity ตรงๆ ไม่วาด",
+    "store ไป store ต้องผ่าน process",
+    "ถูก: entity ส่งข้อมูลให้ process",
+    "entity เขียน data store ตรงไม่ได้ ต้องผ่าน process"
+   ]
+  },
+  {
+   "q": "Context diagram มีลักษณะใด",
+   "c": [
+    "มีหลาย process และ data store",
+    "มี process เดียว (ทั้งระบบ) กับ external entities ไม่มี data store",
+    "มีแต่ data store",
+    "แสดงลำดับการทำงานแบบ if/loop"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ level 0 ขึ้นไป",
+    "ถูก: process 0 ตัวเดียวแทนทั้งระบบ",
+    "ต้องมี process",
+    "DFD ไม่แสดง control flow"
+   ]
+  },
+  {
+   "q": "ชื่อ process ใดตั้งได้ถูกหลัก",
+   "c": [
+    "Invoice",
+    "Customer Data",
+    "Generate Invoice",
+    "D1 Invoice"
+   ],
+   "a": 2,
+   "why": [
+    "คำนามอย่างเดียว ไม่บอกการกระทำ",
+    "เป็นชื่อแบบข้อมูล",
+    "ถูก: กริยา + กรรม",
+    "เป็นรูปแบบชื่อ data store"
+   ]
+  },
+  {
+   "q": "Level 0 มี external entity 'Bank' ที่ไม่มีใน context diagram เป็นปัญหาเรื่องใด",
+   "c": [
+    "Black hole",
+    "Unbalanced DFD",
+    "Miracle",
+    "ไม่มีปัญหา"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่เกี่ยวกับ process",
+    "ถูก: ระดับลูกมี entity/flow ใหม่ที่แม่ไม่มี",
+    "ไม่เกี่ยวกับ process",
+    "ต้อง balance กัน"
+   ]
+  },
+  {
+   "q": "ข้อใดต่างระหว่าง DFD กับ flowchart",
+   "c": [
+    "DFD แสดงลำดับเวลาและเงื่อนไข",
+    "DFD แสดงการไหลของข้อมูล ไม่แสดงลำดับหรือเงื่อนไข",
+    "flowchart มี data store",
+    "ไม่ต่างกัน"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ flowchart",
+    "ถูก: DFD เน้นข้อมูลไหลผ่าน process/store/entity",
+    "flowchart ไม่ได้ใช้ data store ในความหมายนี้",
+    "ต่างกัน"
+   ]
+  },
+  {
+   "q": "flow จาก D1 Menu ไป D2 Orders โดยตรงผิดเพราะ",
+   "c": [
+    "ไม่มีชื่อ",
+    "data store ย้ายข้อมูลเองไม่ได้ ต้องมี process",
+    "data store ต้องอยู่ใน context",
+    "ถูกต้องแล้ว"
+   ],
+   "a": 1,
+   "why": [
+    "ปัญหาหลักคือไม่มี process",
+    "ถูก: ต้องมี process อ่านจาก store หนึ่งแล้วเขียนอีก store",
+    "context ไม่มี data store",
+    "ผิด"
+   ]
+  },
+  {
+   "q": "ถ้าแตก process 2.0 เป็นแผนภาพระดับถัดไป process ย่อยควรมีเลขอะไร",
+   "c": [
+    "2.0, 3.0, 4.0",
+    "2.1, 2.2, 2.3",
+    "1.1, 1.2, 1.3",
+    "A, B, C"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ process ระดับเดียวกัน",
+    "ถูก: level 1 ของ 2.0 ใช้ 2.1, 2.2 …",
+    "เป็นของ process 1.0",
+    "ไม่ใช่รูปแบบที่ใช้"
+   ]
+  },
+  {
+   "q": "คำสั่งใดนำไฟล์ที่แก้แล้วเข้า staging area",
+   "c": [
+    "git commit",
+    "git add",
+    "git push",
+    "git stage --all"
+   ],
+   "a": 1,
+   "why": [
+    "commit บันทึกจาก staging เข้า local repo",
+    "ถูก: git add",
+    "push ส่งขึ้น remote",
+    "ไม่ใช่คำสั่งที่ใช้ในแล็บ"
+   ]
+  },
+  {
+   "q": "ข้อใดอธิบาย git fetch ได้ถูกต้อง",
+   "c": [
+    "ดึงข้อมูลจาก remote และ merge ทันที",
+    "ดึงข้อมูลจาก remote มาไว้ แต่ยังไม่ merge",
+    "ส่งข้อมูลขึ้น remote",
+    "ลบ branch remote"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ git pull",
+    "ถูก: fetch ดึงมาดูก่อน",
+    "นั่นคือ push",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "git pull เท่ากับคำสั่งใดรวมกัน",
+   "c": [
+    "fetch + merge",
+    "add + commit",
+    "clone + push",
+    "branch + checkout"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: pull = fetch แล้ว merge เข้า branch ปัจจุบัน",
+    "นั่นคือการบันทึก",
+    "ไม่ใช่",
+    "นั่นคือสร้างและย้าย branch"
+   ]
+  },
+  {
+   "q": "push branch ใหม่ dev_a ขึ้น GitHub ครั้งแรกใช้คำสั่งใด",
+   "c": [
+    "git push",
+    "git push --set-upstream origin dev_a",
+    "git pull origin dev_a",
+    "git branch -a dev_a"
+   ],
+   "a": 1,
+   "why": [
+    "ครั้งแรกยังไม่มี upstream จะ push ไม่ได้",
+    "ถูก: ผูก local กับ remote ด้วย --set-upstream (-u)",
+    "pull ใช้ดึง",
+    "branch -a ใช้ดู branch ทั้งหมด"
+   ]
+  },
+  {
+   "q": "commit Feature.java ใน branch dev แล้ว checkout master จะเห็นไฟล์นี้ไหม",
+   "c": [
+    "เห็น เพราะอยู่ repo เดียวกัน",
+    "ไม่เห็น จนกว่าจะ merge dev เข้า master",
+    "เห็นเฉพาะตอน push แล้ว",
+    "ไฟล์ถูกลบถาวร"
+   ],
+   "a": 1,
+   "why": [
+    "แต่ละ branch มีชุดไฟล์ของตัวเอง",
+    "ถูก: ตามแล็บ ls ใน master ไม่เห็นไฟล์ feature",
+    "push ไม่ได้ทำให้ไฟล์ข้าม branch",
+    "ไฟล์ยังอยู่ใน dev"
+   ]
+  },
+  {
+   "q": "git status แสดง 'Untracked files: se.txt' หมายความว่า",
+   "c": [
+    "se.txt ถูก commit แล้ว",
+    "Git ยังไม่ได้ติดตาม se.txt",
+    "se.txt ถูกแก้แต่ยังไม่ add",
+    "se.txt อยู่ใน staging"
+   ],
+   "a": 1,
+   "why": [
+    "committed จะไม่แสดงในรายการนี้",
+    "ถูก: ต้อง git add เพื่อเริ่มติดตาม",
+    "นั่นคือ modified",
+    "นั่นคือ Changes to be committed"
+   ]
+  },
+  {
+   "q": "คำสั่งใดใช้ดูว่าไฟล์ถูกแก้อะไรไปบ้าง (ก่อน add)",
+   "c": [
+    "git log",
+    "git diff <file>",
+    "git status -v",
+    "git show-branch"
+   ],
+   "a": 1,
+   "why": [
+    "log ดูประวัติ commit",
+    "ถูก: git diff แสดงบรรทัดที่เปลี่ยน",
+    "ไม่ใช่คำสั่งในแล็บ",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "หลัง PR ถูก merge และลบ branch บน GitHub แล้ว คำสั่งใดลบการอ้างอิง branch remote ที่ไม่มีแล้วในเครื่อง",
+   "c": [
+    "git fetch -p",
+    "git pull --rebase",
+    "git push -d",
+    "git log --all"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: -p (prune) ลบ remote-tracking ที่ถูกลบแล้ว",
+    "ไม่เกี่ยว",
+    "ใช้ลบบน remote",
+    "แค่ดูประวัติ"
+   ]
+  },
+  {
+   "q": "ขั้นตอนใดถูกต้องสำหรับ code review ผ่าน Pull Request ตามแล็บ",
+   "c": [
+    "merge ก่อนแล้วค่อย review",
+    "push branch → เปิด PR → reviewer comment → แก้แล้ว push → merge → ลบ branch",
+    "commit ตรงเข้า master ทุกครั้ง",
+    "ลบ branch ก่อนเปิด PR"
+   ],
+   "a": 1,
+   "why": [
+    "ต้อง review ก่อน merge",
+    "ถูก: ตาม flow ใน Lab 9",
+    "master ต้องเสถียร จึง merge ผ่าน PR",
+    "ต้องมี branch ถึงจะเปิด PR"
+   ]
+  },
+  {
+   "q": "คำสั่งใดใช้ดูประวัติ commit พร้อมรายชื่อไฟล์ที่เปลี่ยน",
+   "c": [
+    "git log --name-status",
+    "git diff --name",
+    "git status --log",
+    "git branch -vv"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: ใช้ในแล็บ",
+    "ไม่ใช่รูปแบบในแล็บ",
+    "ไม่มีคำสั่งนี้",
+    "ดู branch และ tracking"
+   ]
+  }
+ ]
 }
