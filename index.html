@@ -576,6 +576,14 @@ a.chap:hover .num{background:var(--c1)}
 .doc details summary{cursor:pointer;font-weight:700;color:var(--c1)}
 .doc details[open] summary{margin-bottom:6px}
 .doc details li{margin:4px 0}
+.chapGrp + .chapGrp{margin-top:8px}
+.chapGrp .groupLbl{margin:22px 0 4px}
+.chapGrp:first-child .groupLbl{margin-top:4px}
+.chapters.n4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1100px){.chapters.n4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.chapters.n4{grid-template-columns:minmax(0,1fr)}}
+.grpSub{margin:0 0 12px 22px;color:var(--muted);font-size:14px}
+.chapGrp .chapters{margin-top:10px}
 </style>
 
 <header class="top"><div class="wrap">
@@ -602,6 +610,7 @@ a.chap:hover .num{background:var(--c1)}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script>
+const CHAP_GROUPS = {q2:{t:"Quiz 2 · DFD + Git", s:"สอบ อ. 10 พ.ย. 10.45 (Sec 2) · พ. 11 พ.ย. 11.15 (Sec 1) · closed-book"}};
 const SUBJECTS = [
   {id:"web", code:"ITDS241", short:"WEB", name:"Web Technologies and Applications", c:["--sky","--grape"], kind:"สอบเขียนโค้ด", chapters:[
     {id:"web-09", num:"L9", title:"Node.js Part I", sub:"Modules, Path/URL/FS, HTTP server, routing", st:"ready"},
@@ -635,10 +644,10 @@ const SUBJECTS = [
     {id:"sel-8", num:"Lab 8", title:"AI-assisted Programming Workshop", sub:"vibe coding, prompt design, reflection", st:"ready"},
     {id:"sel-9", num:"Lab 9", title:"Git and Code Review", sub:"git commands, branching, pull request review", st:"ready"},
     {id:"sel-10", num:"Lab 10", title:"Testing", sub:"flow chart, independent paths, test cases", st:"ready"},
-    {id:"sel-q2", num:"Quiz 2", title:"Quiz 2 · ภาพรวม (อ. 10 พ.ย.)", sub:"รูปแบบสอบ, แผน 3 วัน, ลิงก์แบบฝึกแยกเรื่อง, ชุดรวมก่อนสอบ", st:"ready"},
-    {id:"sel-q2a", num:"Q2 · 1", title:"DFD Understanding", sub:"สัญลักษณ์, ระดับ, วิธีอ่าน · แบบฝึกอ่าน level 0 / level 1 / แยกองค์ประกอบ", st:"ready"},
-    {id:"sel-q2b", num:"Q2 · 2", title:"Error Detection in DFD", sub:"black hole, miracle, gray hole, flow ต้องห้าม, balancing · หาจุดผิด 4 ชุด", st:"ready"},
-    {id:"sel-q2c", num:"Q2 · 3", title:"Git Functions", sub:"Lab 9 + Cheat Sheet · โจทย์สถานการณ์, อ่านผล git status", st:"ready"}]},
+    {id:"sel-q2", grp:"q2", num:"Q2", title:"ภาพรวม + ชุดรวมก่อนสอบ", sub:"รูปแบบสอบ, แผน 3 วัน, ลิงก์แบบฝึกแยกเรื่อง, ชุดรวมก่อนสอบ", st:"ready"},
+    {id:"sel-q2a", grp:"q2", num:"Q2 · 1", title:"DFD Understanding", sub:"สัญลักษณ์, ระดับ, วิธีอ่าน · แบบฝึกอ่าน level 0 / level 1 / แยกองค์ประกอบ", st:"ready"},
+    {id:"sel-q2b", grp:"q2", num:"Q2 · 2", title:"Error Detection in DFD", sub:"black hole, miracle, gray hole, flow ต้องห้าม, balancing · หาจุดผิด 4 ชุด", st:"ready"},
+    {id:"sel-q2c", grp:"q2", num:"Q2 · 3", title:"Git Functions", sub:"Lab 9 + Cheat Sheet · โจทย์สถานการณ์, อ่านผล git status", st:"ready"}]},
   {id:"arch", code:"ITDS211", short:"ARC", name:"Computer Architecture & OS", c:["--grape","--pink"], kind:"ทฤษฎี", chapters:[
     {id:"arch-8", num:"Ch 8", title:"Parallel Processors from Client to Cloud", sub:"Flynn, vector/SIMD, multithreading, SMP, GPU, cluster", st:"ready"}]},
   {id:"sys", code:"ITDS212", short:"SYS", name:"Computer System Lab", c:["--pink","--grape"], kind:"Lab", chapters:[
@@ -719,19 +728,25 @@ function card(id, i, grp){
 
 function renderSubject(s){
   setCrumbs([{t:s.code}]);
-  const rows = s.chapters.map((c, i) => {
+  const tile = (c, i) => {
     const inner = `<span class="num">${c.num}</span><span class="t"><span class="tt">${esc(c.title)}</span><small>${esc(c.sub)}</small>
       ${c.st === "ready" ? `<span class="chip c">พร้อมอ่าน</span>` : `<span class="chip no">ยังไม่มีสไลด์</span>`}</span>
       ${isRead(c.id) ? `<span class="done" aria-label="อ่านแล้ว">✓</span>` : ""}`;
     return c.st === "ready" ? `<a class="chap pop" style="--i:${i}" href="#${c.id}">${inner}</a>` : `<div class="chap off pop" style="--i:${i}">${inner}</div>`;
-  }).join("");
+  };
+  const sections = [];
+  s.chapters.forEach(c => { const g = c.grp || ""; let sec = sections.find(x => x.g === g); if (!sec){ sec = {g, list:[]}; sections.push(sec); } sec.list.push(c); });
+  let k = 0;
+  const rows = sections.length > 1 || sections[0]?.g
+    ? sections.map(sec => { const G = CHAP_GROUPS[sec.g]; return `<div class="chapGrp">${`<div class="groupLbl">${G ? esc(G.t) : "บทเรียน"}</div>${G && G.s ? `<p class="grpSub">${esc(G.s)}</p>` : ""}`}<div class="chapters${sec.list.length === 4 ? " n4" : ""}">${sec.list.map(c => tile(c, k++)).join("")}</div></div>`; }).join("")
+    : null;
   const done = s.chapters.filter(c => isRead(c.id)).length;
   app.innerHTML = `<section class="subjHead pop" style="${cv(s)}">
       <span class="blob" style="width:160px;height:160px;right:-40px;top:-60px"></span><span class="blob" style="width:70px;height:70px;right:22%;bottom:-24px;animation-delay:-3s"></span>
       <span class="badge">${s.short}</span>
       <div><div class="eyebrow">${s.code} · ${s.kind}</div><h1>${esc(s.name)}</h1>
       <p>${s.chapters.length} บท · อ่านแล้ว ${done} บท</p></div></section>
-    ${s.chapters.length ? `<div class="chapters" style="${cv(s)}">${rows}</div>` :
+    ${s.chapters.length ? (rows ? `<div style="${cv(s)}">${rows}</div>` : `<div class="chapters" style="${cv(s)}">${s.chapters.map(tile).join("")}</div>`) :
       `<div class="empty pop"><div class="ico">📂</div><p>ยังไม่มีไฟล์ของวิชานี้<br>พอได้สไลด์แล้ววางไว้ในโฟลเดอร์ Year 2 DST แล้วบอก Claude ได้เลย</p></div>`}`;
 }
 
