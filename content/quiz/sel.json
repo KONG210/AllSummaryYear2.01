@@ -485,6 +485,198 @@
     "ไม่มีคำสั่งนี้",
     "ดู branch และ tracking"
    ]
+  },
+  {
+   "q": "คำสั่งใดยกเลิกการ stage ไฟล์ โดยยังเก็บการแก้ไว้ใน working directory",
+   "c": [
+    "git reset [file]",
+    "git reset --hard [commit]",
+    "git rm [file]",
+    "git stash drop"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: unstage while retaining the changes",
+    "--hard ล้างทั้ง staging และ working tree งานหาย",
+    "git rm ลบไฟล์ออกจากโปรเจกต์",
+    "ทิ้ง stash บนสุด"
+   ]
+  },
+  {
+   "q": "ต้องการดูสิ่งที่ stage แล้วแต่ยังไม่ commit ใช้คำสั่งใด",
+   "c": [
+    "git diff",
+    "git diff --staged",
+    "git status --diff",
+    "git log -p"
+   ],
+   "a": 1,
+   "why": [
+    "git diff แสดงสิ่งที่ยังไม่ stage",
+    "ถูก: diff of what is staged but not yet committed",
+    "ไม่มีคำสั่งนี้ใน cheat sheet",
+    "log แสดงประวัติ"
+   ]
+  },
+  {
+   "q": "git log branchB..branchA แสดงอะไร",
+   "c": [
+    "commit ที่อยู่ใน branchB แต่ไม่อยู่ใน branchA",
+    "commit ที่อยู่ใน branchA แต่ไม่อยู่ใน branchB",
+    "commit ทั้งหมดของทั้งสอง branch",
+    "commit ที่ทั้งสอง branch มีร่วมกัน"
+   ],
+   "a": 1,
+   "why": [
+    "กลับด้าน",
+    "ถูก: commits on branchA that are not on branchB",
+    "ไม่ใช่",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "กำลังแก้งานค้างแต่ต้องสลับ branch ด่วนโดยยังไม่ commit ควรใช้คำสั่งใด",
+   "c": [
+    "git stash",
+    "git reset --hard",
+    "git rm",
+    "git rebase"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: เก็บการแก้ชั่วคราว แล้วกลับมา git stash pop",
+    "จะทำให้งานหาย",
+    "ลบไฟล์",
+    "rebase ย้าย commit"
+   ]
+  },
+  {
+   "q": "git stash pop ต่างจาก git stash drop อย่างไร",
+   "c": [
+    "pop ทิ้งงาน drop เอากลับมา",
+    "pop เอางานบนสุดของ stack กลับมา drop ทิ้งงานบนสุด",
+    "เหมือนกัน",
+    "pop ใช้กับ remote"
+   ],
+   "a": 1,
+   "why": [
+    "กลับกัน",
+    "ถูก: ตาม cheat sheet",
+    "ต่างกัน",
+    "ใช้ใน local"
+   ]
+  },
+  {
+   "q": "git merge [branch] ทำอะไร",
+   "c": [
+    "รวมประวัติของ branch ปัจจุบันเข้าไปใน branch ที่ระบุ",
+    "รวมประวัติของ branch ที่ระบุเข้ามาใน branch ปัจจุบัน",
+    "สร้าง branch ใหม่",
+    "ลบ branch ที่ระบุ"
+   ],
+   "a": 1,
+   "why": [
+    "ทิศทางกลับกัน",
+    "ถูก: merge the specified branch's history into the current one",
+    "นั่นคือ git branch [name]",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "git rebase [branch] ทำอะไร",
+   "c": [
+    "นำ commit ของ branch ปัจจุบันไปต่อท้าย branch ที่ระบุ",
+    "ลบ commit ทั้งหมด",
+    "ดึงข้อมูลจาก remote",
+    "ยกเลิกการ stage"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: apply commits of current branch ahead of specified one",
+    "ไม่ใช่",
+    "นั่นคือ fetch",
+    "นั่นคือ reset [file]"
+   ]
+  },
+  {
+   "q": "git rm [file] ต่างจากการลบไฟล์เองใน file explorer อย่างไร",
+   "c": [
+    "ไม่ต่างกัน",
+    "git rm ลบไฟล์และ stage การลบไว้รอ commit ให้ด้วย",
+    "git rm ลบเฉพาะบน remote",
+    "git rm ย้ายไฟล์ไปถังขยะ"
+   ],
+   "a": 1,
+   "why": [
+    "ต่างกัน",
+    "ถูก: delete the file from project and stage the removal",
+    "ทำงานใน local",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "ต้องการไม่ให้ไฟล์ *.log ถูก commit ทำอย่างไร",
+   "c": [
+    "git rm *.log ทุกครั้ง",
+    "ใส่ pattern *.log ในไฟล์ .gitignore",
+    "git stash *.log",
+    "git reset --hard"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่ใช่วิธีป้องกัน",
+    "ถูก: .gitignore ป้องกันการ stage/commit ตาม pattern",
+    "stash เก็บชั่วคราว",
+    "ทำให้งานหาย"
+   ]
+  },
+  {
+   "q": "คำสั่งใดเพิ่ม URL ของ repository ภายนอกเป็นชื่อเล่น เช่น origin",
+   "c": [
+    "git remote add [alias] [url]",
+    "git clone [alias]",
+    "git push [alias] [url]",
+    "git config remote [url]"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: add a git URL as an alias",
+    "clone ดึงทั้ง repo",
+    "push ส่งข้อมูล",
+    "ไม่ใช่รูปแบบใน cheat sheet"
+   ]
+  },
+  {
+   "q": "git reset --hard [commit] มีผลอย่างไร",
+   "c": [
+    "unstage ไฟล์เดียว",
+    "ล้าง staging area และเขียน working tree ทับด้วย commit ที่ระบุ",
+    "สร้าง commit ใหม่",
+    "ส่งขึ้น remote"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ reset [file]",
+    "ถูก: งานที่ยังไม่ commit จะหาย",
+    "ไม่ใช่",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "ต้องการดูประวัติ commit ของไฟล์แม้ไฟล์ถูกเปลี่ยนชื่อมาแล้ว ใช้คำสั่งใด",
+   "c": [
+    "git log --follow [file]",
+    "git show [file]",
+    "git diff --staged",
+    "git log --stat"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: even across renames",
+    "show ใช้ดู object ตาม SHA",
+    "ไม่ใช่",
+    "ไม่เฉพาะไฟล์และไม่ติดตามการเปลี่ยนชื่อ"
+   ]
   }
  ]
 }

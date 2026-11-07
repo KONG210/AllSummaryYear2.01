@@ -8,8 +8,8 @@
 |---|---|
 | **DFD Understanding** | ข้อ 1–2 (กฎ + อ่านแผนภาพ) |
 | **Error detection in DFD** | ข้อ 3–4 (หาจุดผิด + balancing) |
-| **Git functions** | ข้อ 5–6 (คำสั่ง + โจทย์สถานการณ์) · ทวนเต็มที่ [Lab 9 Git](#sel-9) |
-| **Unit test** | ข้อ 7 · ⚠️ **ยังรอไฟล์** · ระหว่างนี้ทวน [Lab 10 Testing](#sel-10) |
+| **Git functions** | ข้อ 5–8 (Lab 9 + Cheat Sheet จาก lecture + โจทย์สถานการณ์) · ทวนเต็มที่ [Lab 9 Git](#sel-9) |
+| **Unit test** | ข้อ 9 · ⚠️ **ยังรอไฟล์** · ระหว่างนี้ทวน [Lab 10 Testing](#sel-10) |
 
 > ⚠️ ไฟล์แล็บ DFD ของวิชานี้ยังไม่มีในเว็บ ส่วน DFD ด้านล่างใช้**กฎมาตรฐานตามตำรา** (สัญลักษณ์แบบ DeMarco & Yourdon) ถ้าแล็บใช้สัญลักษณ์อื่นหรือมีกฎเพิ่ม ส่งไฟล์มาจะปรับให้ตรง
 
@@ -135,7 +135,97 @@
 
 **Pull Request flow:** push branch → New pull request → assign reviewer → reviewer comment (กด "+" หน้าบรรทัด) → เจ้าของแก้ + push (commit ใหม่เข้า PR เอง) → review ซ้ำ → **Merge** เข้า master → ลบ branch → ทุกคน `git fetch -p`
 
-## 6. แบบฝึก D: Git จากสถานการณ์
+## 6. Git Cheat Sheet (จาก Lecture)
+
+> 📌 จาก **GitHub Education – Git Cheat Sheet** ที่ใช้ในวิชาทฤษฎี · รวมคำสั่งที่ Lab 9 ไม่ได้ใช้ ควรรู้ความหมายทุกตัว
+
+**Setup**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git config --global user.name "[firstname lastname]"` | ตั้งชื่อ ใช้ระบุว่าใครทำอะไรในประวัติ |
+| `git config --global user.email "[valid-email]"` | ตั้งอีเมลที่ติดไปกับทุก commit |
+| `git config --global color.ui auto` | เปิดสีใน command line ให้อ่านง่าย |
+
+**Setup & Init**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git init` | ทำให้โฟลเดอร์ที่มีอยู่เป็น Git repository |
+| `git clone [url]` | ดึง repository ทั้งหมดจาก URL ที่ host ไว้ |
+
+**Stage & Snapshot**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git status` | แสดงไฟล์ที่ถูกแก้ใน working directory และไฟล์ที่ stage ไว้รอ commit |
+| `git add [file]` | stage ไฟล์ตามที่เป็นตอนนี้ เพื่อ commit ครั้งถัดไป |
+| `git reset [file]` | **ยกเลิกการ stage** ไฟล์ แต่ **ยังเก็บการแก้ไว้** ใน working directory |
+| `git diff` | ดูสิ่งที่แก้แต่ **ยังไม่ stage** |
+| `git diff --staged` | ดูสิ่งที่ **stage แล้วแต่ยังไม่ commit** |
+| `git commit -m "[descriptive message]"` | บันทึกสิ่งที่ stage เป็น snapshot ใหม่ |
+
+**Branch & Merge**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git branch` | แสดง branch ทั้งหมด · `*` อยู่หน้า branch ที่ใช้อยู่ |
+| `git branch [branch-name]` | สร้าง branch ใหม่ที่ commit ปัจจุบัน |
+| `git checkout` | ย้ายไป branch อื่น และ checkout มาที่ working directory |
+| `git merge [branch]` | รวมประวัติของ branch ที่ระบุ **เข้ามาใน branch ปัจจุบัน** |
+| `git log` | แสดง commit ทั้งหมดในประวัติของ branch ปัจจุบัน |
+
+**Inspect & Compare**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git log` | ประวัติ commit ของ branch ที่ใช้อยู่ |
+| `git log branchB..branchA` | commit ที่อยู่ใน **branchA แต่ไม่อยู่ใน branchB** |
+| `git log --follow [file]` | commit ที่เปลี่ยนไฟล์นี้ **แม้ไฟล์ถูกเปลี่ยนชื่อ** |
+| `git diff branchB...branchA` | diff ของสิ่งที่อยู่ใน **branchA แต่ไม่อยู่ใน branchB** |
+| `git show [SHA]` | แสดง object ใดๆ ใน Git แบบอ่านง่าย |
+
+**Tracking Path Changes**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git rm [file]` | ลบไฟล์ออกจากโปรเจกต์ และ **stage การลบ** ไว้รอ commit |
+| `git mv [existing-path] [new-path]` | ย้าย/เปลี่ยนชื่อไฟล์ และ **stage การย้าย** |
+| `git log --stat -M` | แสดง log พร้อมบอกว่า path ไหนถูกย้าย |
+
+**Ignoring Patterns**
+- สร้างไฟล์ **`.gitignore`** ใส่ pattern แบบตรงตัวหรือ wildcard เช่น `logs/`, `*.notes`, `pattern*/` เพื่อ **กันไม่ให้ stage/commit ไฟล์ที่ไม่ต้องการ**
+- `git config --global core.excludesfile [file]` = ignore pattern ระดับระบบ ใช้กับทุก local repo
+
+**Share & Update**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git remote add [alias] [url]` | เพิ่ม URL ของ git เป็นชื่อเล่น (alias) เช่น `origin` |
+| `git fetch [alias]` | ดึงทุก branch จาก remote นั้นลงมา |
+| `git merge [alias]/[branch]` | merge branch ฝั่ง remote เข้า branch ปัจจุบัน ให้ทันสมัย |
+| `git push [alias] [branch]` | ส่ง commit ของ branch local ขึ้น branch ฝั่ง remote |
+| `git pull` | **fetch และ merge** commit จาก remote branch ที่ติดตามอยู่ |
+
+**Rewrite History**
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git rebase [branch]` | นำ commit ของ branch ปัจจุบันไป **ต่อท้าย** branch ที่ระบุ |
+| `git reset --hard [commit]` | ล้าง staging area และ **เขียน working tree ทับ** ด้วย commit ที่ระบุ (งานที่ยังไม่ commit หาย) |
+
+**Temporary Commits (Stash)** – เก็บไฟล์ที่แก้ไว้ชั่วคราวเพื่อสลับ branch
+| คำสั่ง | ความหมาย |
+|---|---|
+| `git stash` | เก็บการแก้ทั้งที่ modified และ staged ไว้ก่อน |
+| `git stash list` | ดูรายการ stash เรียงแบบ stack |
+| `git stash pop` | เอางานจาก **บนสุดของ stack** กลับมา |
+| `git stash drop` | **ทิ้ง** งานบนสุดของ stack |
+
+**คู่ที่ข้อสอบชอบถาม**
+| คู่ | ต่างกันอย่างไร |
+|---|---|
+| `git diff` vs `git diff --staged` | ยังไม่ stage vs stage แล้วแต่ยังไม่ commit |
+| `git reset [file]` vs `git reset --hard [commit]` | แค่เอาออกจาก staging (งานยังอยู่) vs ล้างทั้ง staging และ working tree |
+| `git fetch` vs `git pull` | ดึงมาอย่างเดียว vs ดึง + merge |
+| `git merge` vs `git rebase` | รวมประวัติของอีก branch เข้ามา vs ย้าย commit ของเราไปต่อท้ายอีก branch |
+| `git stash pop` vs `git stash drop` | เอากลับมาใช้ vs ทิ้ง |
+| `git rm` vs ลบไฟล์เอง | `git rm` ลบ + stage การลบให้ด้วย |
+| `git log branchB..branchA` | อ่านว่า "อยู่ใน A แต่ไม่อยู่ใน B" (ตัวหลังลบตัวหน้า) |
+
+## 7. แบบฝึก D: Git จากสถานการณ์
 
 เขียนคำสั่งให้ครบก่อนเปิดเฉลย
 1. สร้างโฟลเดอร์ใหม่ให้เป็น Git repo แล้ว commit ไฟล์ `app.java` ครั้งแรก
@@ -159,7 +249,32 @@
 <li><b>staged</b> (add แล้ว) · ขั้นต่อไป <code>git commit -m "..."</code></li>
 </ol></details>
 
-## 7. Unit test
+## 8. แบบฝึก E: คำสั่งจาก Cheat Sheet
+
+1. `git add` ไฟล์ `login.java` ไปแล้ว แต่อยากเอาออกจาก staging โดย**ไม่ให้งานที่แก้หาย**
+2. อยากดูว่า**สิ่งที่ stage ไว้แล้ว**ต่างจาก commit ล่าสุดอย่างไร
+3. กำลังทำงานค้างใน branch `feature` (ยังไม่อยาก commit) แต่ต้องรีบสลับไปแก้บั๊กที่ `master` แล้วค่อยกลับมาทำต่อ
+4. อยากรวมงานจาก branch `feature` เข้า `master`
+5. อยากรู้ว่ามี commit อะไรบ้างที่อยู่ใน `feature` แต่ยังไม่อยู่ใน `master`
+6. เปลี่ยนชื่อไฟล์ `util.java` เป็น `helper.java` ให้ Git รู้และ stage ไว้ให้เลย
+7. ไม่อยากให้ไฟล์ทุกตัวที่ลงท้าย `.log` และโฟลเดอร์ `build/` ถูก commit
+8. เพิ่ม remote ชื่อ `origin` ที่ URL `https://github.com/team/app.git` แล้ว push branch `master` ขึ้นไป
+9. ทดลองแก้ไปมั่วจนพัง อยากย้อน working directory กลับไปเหมือน commit `a1b2c3` ทั้งหมด (ยอมให้งานที่ยังไม่ commit หาย)
+
+<details><summary>เฉลยแบบฝึก E</summary>
+<ol>
+<li><code>git reset login.java</code> (unstage แต่การแก้ยังอยู่)</li>
+<li><code>git diff --staged</code></li>
+<li><code>git stash</code> → <code>git checkout master</code> → แก้บั๊ก + commit → <code>git checkout feature</code> → <code>git stash pop</code></li>
+<li><code>git checkout master</code> → <code>git merge feature</code> (merge เข้า branch ปัจจุบัน)</li>
+<li><code>git log master..feature</code> (อยู่ใน feature แต่ไม่อยู่ใน master)</li>
+<li><code>git mv util.java helper.java</code></li>
+<li>สร้างไฟล์ <code>.gitignore</code> ใส่บรรทัด <code>*.log</code> และ <code>build/</code></li>
+<li><code>git remote add origin https://github.com/team/app.git</code> → <code>git push origin master</code></li>
+<li><code>git reset --hard a1b2c3</code></li>
+</ol></details>
+
+## 9. Unit test
 
 > ⚠️ **ยังรอไฟล์ Unit test ของแล็บ** ส่งมาแล้วจะเติมบทนี้พร้อมแบบฝึก
 > ระหว่างนี้ทวน [Lab 10 Testing](#sel-10) (flow chart, independent paths, test cases) และ [L13 Unit/Integration/System Testing](#se-13) ของวิชาทฤษฎี
@@ -171,3 +286,4 @@
 - 🔥 Git: init/add/commit/status/log/diff · clone/push/**fetch vs pull** · branch/checkout/`--set-upstream` · PR → merge → `fetch -p` / `branch -d`
 - ⭐ ไฟล์ใน branch หนึ่งไม่โผล่ใน branch อื่นจนกว่าจะ merge
 - ⭐ สถานะไฟล์: untracked → staged → committed → modified
+- 🔥 Cheat sheet: `reset [file]` (unstage) vs `reset --hard` · `diff` vs `diff --staged` · `merge` vs `rebase` · `stash` / `stash pop` / `stash drop` · `rm` / `mv` · `.gitignore` · `log B..A`
