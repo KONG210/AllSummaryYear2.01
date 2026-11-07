@@ -635,7 +635,10 @@ const SUBJECTS = [
     {id:"sel-8", num:"Lab 8", title:"AI-assisted Programming Workshop", sub:"vibe coding, prompt design, reflection", st:"ready"},
     {id:"sel-9", num:"Lab 9", title:"Git and Code Review", sub:"git commands, branching, pull request review", st:"ready"},
     {id:"sel-10", num:"Lab 10", title:"Testing", sub:"flow chart, independent paths, test cases", st:"ready"},
-    {id:"sel-q2", num:"Quiz 2", title:"Quiz 2 · DFD + Git (อ. 10 พ.ย.)", sub:"สัญลักษณ์ DFD, black hole/miracle, balancing, คำสั่ง Git + แบบฝึกพร้อมเฉลย", st:"ready"}]},
+    {id:"sel-q2", num:"Quiz 2", title:"Quiz 2 · ภาพรวม (อ. 10 พ.ย.)", sub:"รูปแบบสอบ, แผน 3 วัน, ลิงก์แบบฝึกแยกเรื่อง, ชุดรวมก่อนสอบ", st:"ready"},
+    {id:"sel-q2a", num:"Q2 · 1", title:"DFD Understanding", sub:"สัญลักษณ์, ระดับ, วิธีอ่าน · แบบฝึกอ่าน level 0 / level 1 / แยกองค์ประกอบ", st:"ready"},
+    {id:"sel-q2b", num:"Q2 · 2", title:"Error Detection in DFD", sub:"black hole, miracle, gray hole, flow ต้องห้าม, balancing · หาจุดผิด 4 ชุด", st:"ready"},
+    {id:"sel-q2c", num:"Q2 · 3", title:"Git Functions", sub:"Lab 9 + Cheat Sheet · โจทย์สถานการณ์, อ่านผล git status", st:"ready"}]},
   {id:"arch", code:"ITDS211", short:"ARC", name:"Computer Architecture & OS", c:["--grape","--pink"], kind:"ทฤษฎี", chapters:[
     {id:"arch-8", num:"Ch 8", title:"Parallel Processors from Client to Cloud", sub:"Flynn, vector/SIMD, multithreading, SMP, GPU, cluster", st:"ready"}]},
   {id:"sys", code:"ITDS212", short:"SYS", name:"Computer System Lab", c:["--pink","--grape"], kind:"Lab", chapters:[
@@ -902,8 +905,8 @@ async function loadQuiz(sid){ if (!quizCache[sid]) quizCache[sid] = JSON.parse(a
 /* ---------- today plan ---------- */
 const PLAN = {
  "2026-11-02":["web-09"], "2026-11-03":["web-10","net-q3-quick"], "2026-11-04":["net-q3","#calc","web-11"], "2026-11-05":["#learn","#paper","#calc","net-q3-quiz"],
- "2026-11-06":["Quiz 3 Network (เน้นคำนวณ)","net-q3-quick"], "2026-11-07":["Project: วางแผน + ทำ backend","net-ais"], "2026-11-08":["sel-q2","net-4"],
- "2026-11-09":["sel-q2-quiz","sel-9-quick","web-12"], "2026-11-10":["sel-q2-quick","Quiz 2 SE Lab 10.45 น.","web-13"], "2026-11-11":["web-13-quiz","wlab-12"], "2026-11-12":["se-10"],
+ "2026-11-06":["Quiz 3 Network (เน้นคำนวณ)","net-q3-quick"], "2026-11-07":["Project: วางแผน + ทำ backend","net-ais"], "2026-11-08":["sel-q2a","sel-q2b","net-4"],
+ "2026-11-09":["sel-q2c","sel-q2a-quiz","sel-q2b-quiz","sel-q2c-quiz"], "2026-11-10":["sel-q2-quick","sel-q2-quiz","Quiz 2 SE Lab 10.45 น."], "2026-11-11":["web-12","web-13","wlab-12"], "2026-11-12":["se-10","web-13-quiz"],
  "2026-11-13":["se-11","sel-9"], "2026-11-14":["Project: ทำ feature หลัก","net-5"], "2026-11-15":["net-5-quiz","net-5-quick"],
  "2026-11-16":["Project: ทำ feature ที่เหลือ"], "2026-11-17":["Project: ทดสอบ + แก้ bug"], "2026-11-18":["Project: ส่งงาน (เป้าหมาย)"],
  "2026-11-19":["se-12"], "2026-11-20":["se-13","Project: กำหนดส่ง 23:55"], "2026-11-21":["sel-10","arch-8"],

@@ -167,6 +167,429 @@
  ],
  "sel-q2": [
   {
+   "q": "ในสัญลักษณ์แบบ Gane & Sarson process มีลักษณะอย่างไร",
+   "c": [
+    "วงกลม",
+    "สี่เหลี่ยมมุมมนมีเลขด้านบน",
+    "เส้นคู่ขนาน",
+    "สามเหลี่ยม"
+   ],
+   "a": 1,
+   "why": [
+    "วงกลมเป็นแบบ Yourdon",
+    "ถูก",
+    "เส้นคู่ขนานเป็น data store แบบ Yourdon",
+    "ไม่มีใน DFD"
+   ]
+  },
+  {
+   "q": "ข้อใดต่างระหว่าง DFD กับ flowchart",
+   "c": [
+    "DFD แสดงลำดับเวลาและเงื่อนไข",
+    "DFD แสดงการไหลของข้อมูล ไม่แสดงลำดับหรือเงื่อนไข",
+    "flowchart มี data store",
+    "ไม่ต่างกัน"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ flowchart",
+    "ถูก: DFD เน้นข้อมูลไหลผ่าน process/store/entity",
+    "flowchart ไม่ได้ใช้ data store ในความหมายนี้",
+    "ต่างกัน"
+   ]
+  },
+  {
+   "q": "External entity คืออะไร",
+   "c": [
+    "ที่เก็บข้อมูลของระบบ",
+    "คนหรือระบบภายนอกที่ส่งหรือรับข้อมูลกับระบบ",
+    "การประมวลผลภายในระบบ",
+    "ข้อมูลที่ไหล"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ data store",
+    "ถูก",
+    "นั่นคือ process",
+    "นั่นคือ data flow"
+   ]
+  },
+  {
+   "q": "Context diagram มีลักษณะใด",
+   "c": [
+    "มีหลาย process และ data store",
+    "มี process เดียว (ทั้งระบบ) กับ external entities ไม่มี data store",
+    "มีแต่ data store",
+    "แสดงลำดับการทำงานแบบ if/loop"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ level 0 ขึ้นไป",
+    "ถูก: process 0 ตัวเดียวแทนทั้งระบบ",
+    "ต้องมี process",
+    "DFD ไม่แสดง control flow"
+   ]
+  },
+  {
+   "q": "process ที่มี output แต่ไม่มี input เรียกว่าอะไร",
+   "c": [
+    "Black hole",
+    "Miracle (spontaneous generation)",
+    "Gray hole",
+    "Balancing error"
+   ],
+   "a": 1,
+   "why": [
+    "black hole คือเข้าอย่างเดียว",
+    "ถูก: สร้างข้อมูลจากความว่างเปล่า",
+    "gray hole มี input แต่ไม่พอ",
+    "balancing เป็นเรื่องระหว่างระดับ"
+   ]
+  },
+  {
+   "q": "flow ด้านล่างผิดหลักใด และควรแก้อย่างไร",
+   "c": [
+    "ไม่ผิด",
+    "Entity ↔ Store ต้องเพิ่ม process คั่นกลาง",
+    "Miracle ต้องลบ",
+    "Gray hole ต้องเพิ่ม input"
+   ],
+   "a": 1,
+   "why": [
+    "ผิด",
+    "ถูก: entity เขียน store ตรงไม่ได้",
+    "ไม่เกี่ยว",
+    "ไม่เกี่ยว"
+   ],
+   "code": "Registrar Staff --new student--> [D1 Students]"
+  },
+  {
+   "q": "เมื่อตอบข้อสอบ 'หาจุดผิดใน DFD' ควรเขียนอะไรให้ครบ",
+   "c": [
+    "แค่วงกลมจุดผิด",
+    "ตำแหน่ง ชื่อข้อผิดพลาด และวิธีแก้",
+    "วาดแผนภาพใหม่ทั้งหมดเท่านั้น",
+    "จำนวนจุดผิด"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่พอ ผู้ตรวจไม่รู้ว่าเราเข้าใจ",
+    "ถูก: บอกว่าผิดตรงไหน ผิดเพราะอะไร แก้อย่างไร",
+    "ไม่จำเป็นเสมอ",
+    "ไม่พอ"
+   ]
+  },
+  {
+   "q": "flow จาก D1 Menu ไป D2 Orders โดยตรงผิดเพราะ",
+   "c": [
+    "ไม่มีชื่อ",
+    "data store ย้ายข้อมูลเองไม่ได้ ต้องมี process",
+    "data store ต้องอยู่ใน context",
+    "ถูกต้องแล้ว"
+   ],
+   "a": 1,
+   "why": [
+    "ปัญหาหลักคือไม่มี process",
+    "ถูก: ต้องมี process อ่านจาก store หนึ่งแล้วเขียนอีก store",
+    "context ไม่มี data store",
+    "ผิด"
+   ]
+  },
+  {
+   "q": "ต้องการไม่ให้ไฟล์ *.log ถูก commit ทำอย่างไร",
+   "c": [
+    "git rm *.log ทุกครั้ง",
+    "ใส่ pattern *.log ในไฟล์ .gitignore",
+    "git stash *.log",
+    "git reset --hard"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่ใช่วิธีป้องกัน",
+    "ถูก: .gitignore ป้องกันการ stage/commit ตาม pattern",
+    "stash เก็บชั่วคราว",
+    "ทำให้งานหาย"
+   ]
+  },
+  {
+   "q": "ข้อใดอธิบาย git fetch ได้ถูกต้อง",
+   "c": [
+    "ดึงข้อมูลจาก remote และ merge ทันที",
+    "ดึงข้อมูลจาก remote มาไว้ แต่ยังไม่ merge",
+    "ส่งข้อมูลขึ้น remote",
+    "ลบ branch remote"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ git pull",
+    "ถูก: fetch ดึงมาดูก่อน",
+    "นั่นคือ push",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "git rebase [branch] ทำอะไร",
+   "c": [
+    "นำ commit ของ branch ปัจจุบันไปต่อท้าย branch ที่ระบุ",
+    "ลบ commit ทั้งหมด",
+    "ดึงข้อมูลจาก remote",
+    "ยกเลิกการ stage"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: apply commits of current branch ahead of specified one",
+    "ไม่ใช่",
+    "นั่นคือ fetch",
+    "นั่นคือ reset [file]"
+   ]
+  },
+  {
+   "q": "คำสั่งใดใช้ดูว่าไฟล์ถูกแก้อะไรไปบ้าง (ก่อน add)",
+   "c": [
+    "git log",
+    "git diff <file>",
+    "git status -v",
+    "git show-branch"
+   ],
+   "a": 1,
+   "why": [
+    "log ดูประวัติ commit",
+    "ถูก: git diff แสดงบรรทัดที่เปลี่ยน",
+    "ไม่ใช่คำสั่งในแล็บ",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "git push ได้ผลด้านล่าง ควรทำอย่างไร",
+   "c": [
+    "git push --force ทุกครั้ง",
+    "git pull ก่อน แล้วค่อย push",
+    "git init ใหม่",
+    "ลบ repo"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่ใช่วิธีที่สอน และเสี่ยงทับงานคนอื่น",
+    "ถูก: remote มีของใหม่ที่ local ยังไม่มี",
+    "ไม่เกี่ยว",
+    "ไม่เกี่ยว"
+   ],
+   "code": "$ git push\n ! [rejected]        master -> master (fetch first)"
+  },
+  {
+   "q": "git pull เท่ากับคำสั่งใดรวมกัน",
+   "c": [
+    "fetch + merge",
+    "add + commit",
+    "clone + push",
+    "branch + checkout"
+   ],
+   "a": 0,
+   "why": [
+    "ถูก: pull = fetch แล้ว merge เข้า branch ปัจจุบัน",
+    "นั่นคือการบันทึก",
+    "ไม่ใช่",
+    "นั่นคือสร้างและย้าย branch"
+   ]
+  }
+ ],
+ "sel-q2a": [
+  {
+   "q": "Context diagram มีลักษณะใด",
+   "c": [
+    "มีหลาย process และ data store",
+    "มี process เดียว (ทั้งระบบ) กับ external entities ไม่มี data store",
+    "มีแต่ data store",
+    "แสดงลำดับการทำงานแบบ if/loop"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ level 0 ขึ้นไป",
+    "ถูก: process 0 ตัวเดียวแทนทั้งระบบ",
+    "ต้องมี process",
+    "DFD ไม่แสดง control flow"
+   ]
+  },
+  {
+   "q": "ชื่อ process ใดตั้งได้ถูกหลัก",
+   "c": [
+    "Invoice",
+    "Customer Data",
+    "Generate Invoice",
+    "D1 Invoice"
+   ],
+   "a": 2,
+   "why": [
+    "คำนามอย่างเดียว ไม่บอกการกระทำ",
+    "เป็นชื่อแบบข้อมูล",
+    "ถูก: กริยา + กรรม",
+    "เป็นรูปแบบชื่อ data store"
+   ]
+  },
+  {
+   "q": "ข้อใดต่างระหว่าง DFD กับ flowchart",
+   "c": [
+    "DFD แสดงลำดับเวลาและเงื่อนไข",
+    "DFD แสดงการไหลของข้อมูล ไม่แสดงลำดับหรือเงื่อนไข",
+    "flowchart มี data store",
+    "ไม่ต่างกัน"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ flowchart",
+    "ถูก: DFD เน้นข้อมูลไหลผ่าน process/store/entity",
+    "flowchart ไม่ได้ใช้ data store ในความหมายนี้",
+    "ต่างกัน"
+   ]
+  },
+  {
+   "q": "ถ้าแตก process 2.0 เป็นแผนภาพระดับถัดไป process ย่อยควรมีเลขอะไร",
+   "c": [
+    "2.0, 3.0, 4.0",
+    "2.1, 2.2, 2.3",
+    "1.1, 1.2, 1.3",
+    "A, B, C"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ process ระดับเดียวกัน",
+    "ถูก: level 1 ของ 2.0 ใช้ 2.1, 2.2 …",
+    "เป็นของ process 1.0",
+    "ไม่ใช่รูปแบบที่ใช้"
+   ]
+  },
+  {
+   "q": "ในสัญลักษณ์แบบ DeMarco & Yourdon process ใช้รูปอะไร",
+   "c": [
+    "สี่เหลี่ยม",
+    "วงกลม",
+    "กล่องเปิดด้านขวา",
+    "ลูกศร"
+   ],
+   "a": 1,
+   "why": [
+    "สี่เหลี่ยมคือ external entity",
+    "ถูก: process เป็นวงกลม",
+    "กล่องเปิดคือ data store",
+    "ลูกศรคือ data flow"
+   ]
+  },
+  {
+   "q": "ในสัญลักษณ์แบบ Gane & Sarson process มีลักษณะอย่างไร",
+   "c": [
+    "วงกลม",
+    "สี่เหลี่ยมมุมมนมีเลขด้านบน",
+    "เส้นคู่ขนาน",
+    "สามเหลี่ยม"
+   ],
+   "a": 1,
+   "why": [
+    "วงกลมเป็นแบบ Yourdon",
+    "ถูก",
+    "เส้นคู่ขนานเป็น data store แบบ Yourdon",
+    "ไม่มีใน DFD"
+   ]
+  },
+  {
+   "q": "External entity คืออะไร",
+   "c": [
+    "ที่เก็บข้อมูลของระบบ",
+    "คนหรือระบบภายนอกที่ส่งหรือรับข้อมูลกับระบบ",
+    "การประมวลผลภายในระบบ",
+    "ข้อมูลที่ไหล"
+   ],
+   "a": 1,
+   "why": [
+    "นั่นคือ data store",
+    "ถูก",
+    "นั่นคือ process",
+    "นั่นคือ data flow"
+   ]
+  },
+  {
+   "q": "Context diagram ใช้เลขอะไรกับ process",
+   "c": [
+    "1.0",
+    "0",
+    "D0",
+    "A"
+   ],
+   "a": 1,
+   "why": [
+    "1.0 ใช้ใน level 0",
+    "ถูก: process เดียวเลข 0",
+    "D ใช้กับ data store",
+    "ไม่ใช่"
+   ]
+  },
+  {
+   "q": "ชื่อ data flow ควรเป็นแบบใด",
+   "c": [
+    "คำกริยา เช่น Calculate",
+    "คำนามบอกว่าเป็นข้อมูลอะไร เช่น order details",
+    "ไม่ต้องมีชื่อ",
+    "ชื่อ entity ปลายทาง"
+   ],
+   "a": 1,
+   "why": [
+    "กริยาใช้กับ process",
+    "ถูก",
+    "flow ต้องมีชื่อ",
+    "ไม่ใช่หลักการตั้งชื่อ"
+   ]
+  },
+  {
+   "q": "จาก flow ด้านล่าง process 2.0 เขียนข้อมูลลง data store ใด",
+   "c": [
+    "D1 Members",
+    "D2 Books",
+    "D3 Loans",
+    "ไม่มี"
+   ],
+   "a": 2,
+   "why": [
+    "2.0 อ่านจาก D1",
+    "2.0 อ่านจาก D2",
+    "ถูก: ลูกศรออกจาก 2.0 เข้า D3 = เขียน",
+    "มีการเขียนลง D3"
+   ],
+   "code": "Member --borrow request--> (2.0 Borrow Book)\n[D1 Members] --member status--> (2.0)\n[D2 Books] --book info--> (2.0)\n(2.0) --loan record--> [D3 Loans]"
+  },
+  {
+   "q": "ใน Level 1 ของ 2.0 มี flow 'marked answers' จาก 2.1 ไป 2.2 ซึ่งไม่มีใน Level 0 ข้อใดถูก",
+   "c": [
+    "ไม่ balance ต้องเพิ่มใน Level 0",
+    "ไม่ผิด เพราะเป็น flow ภายในระหว่าง process ลูก",
+    "ต้องลบ 2.2 ทิ้ง",
+    "ต้องเปลี่ยนเป็น data store"
+   ],
+   "a": 1,
+   "why": [
+    "flow ภายในไม่ต้องแสดงในแม่",
+    "ถูก: balancing ดูเฉพาะ flow ที่ข้ามขอบ",
+    "ไม่เกี่ยว",
+    "ไม่จำเป็น"
+   ]
+  },
+  {
+   "q": "ลูกศรที่ออกจาก data store ไปยัง process หมายถึงอะไร",
+   "c": [
+    "process เขียนข้อมูลลง store",
+    "process อ่านข้อมูลจาก store",
+    "store ส่งข้อมูลให้ entity",
+    "ลบข้อมูลใน store"
+   ],
+   "a": 1,
+   "why": [
+    "เขียนคือลูกศรเข้า store",
+    "ถูก",
+    "ต้องผ่าน process",
+    "DFD ไม่ได้แสดงแบบนี้"
+   ]
+  }
+ ],
+ "sel-q2b": [
+  {
    "q": "process ที่มีข้อมูลเข้าแต่ไม่มีข้อมูลออกเรียกว่าอะไร",
    "c": [
     "Miracle",
@@ -231,38 +654,6 @@
    ]
   },
   {
-   "q": "Context diagram มีลักษณะใด",
-   "c": [
-    "มีหลาย process และ data store",
-    "มี process เดียว (ทั้งระบบ) กับ external entities ไม่มี data store",
-    "มีแต่ data store",
-    "แสดงลำดับการทำงานแบบ if/loop"
-   ],
-   "a": 1,
-   "why": [
-    "นั่นคือ level 0 ขึ้นไป",
-    "ถูก: process 0 ตัวเดียวแทนทั้งระบบ",
-    "ต้องมี process",
-    "DFD ไม่แสดง control flow"
-   ]
-  },
-  {
-   "q": "ชื่อ process ใดตั้งได้ถูกหลัก",
-   "c": [
-    "Invoice",
-    "Customer Data",
-    "Generate Invoice",
-    "D1 Invoice"
-   ],
-   "a": 2,
-   "why": [
-    "คำนามอย่างเดียว ไม่บอกการกระทำ",
-    "เป็นชื่อแบบข้อมูล",
-    "ถูก: กริยา + กรรม",
-    "เป็นรูปแบบชื่อ data store"
-   ]
-  },
-  {
    "q": "Level 0 มี external entity 'Bank' ที่ไม่มีใน context diagram เป็นปัญหาเรื่องใด",
    "c": [
     "Black hole",
@@ -276,22 +667,6 @@
     "ถูก: ระดับลูกมี entity/flow ใหม่ที่แม่ไม่มี",
     "ไม่เกี่ยวกับ process",
     "ต้อง balance กัน"
-   ]
-  },
-  {
-   "q": "ข้อใดต่างระหว่าง DFD กับ flowchart",
-   "c": [
-    "DFD แสดงลำดับเวลาและเงื่อนไข",
-    "DFD แสดงการไหลของข้อมูล ไม่แสดงลำดับหรือเงื่อนไข",
-    "flowchart มี data store",
-    "ไม่ต่างกัน"
-   ],
-   "a": 1,
-   "why": [
-    "นั่นคือ flowchart",
-    "ถูก: DFD เน้นข้อมูลไหลผ่าน process/store/entity",
-    "flowchart ไม่ได้ใช้ data store ในความหมายนี้",
-    "ต่างกัน"
    ]
   },
   {
@@ -311,21 +686,139 @@
    ]
   },
   {
-   "q": "ถ้าแตก process 2.0 เป็นแผนภาพระดับถัดไป process ย่อยควรมีเลขอะไร",
+   "q": "process ด้านล่างมีข้อผิดพลาดแบบใด",
    "c": [
-    "2.0, 3.0, 4.0",
-    "2.1, 2.2, 2.3",
-    "1.1, 1.2, 1.3",
-    "A, B, C"
+    "Miracle",
+    "Black hole",
+    "Gray hole",
+    "ไม่ผิด"
    ],
    "a": 1,
    "why": [
-    "นั่นคือ process ระดับเดียวกัน",
-    "ถูก: level 1 ของ 2.0 ใช้ 2.1, 2.2 …",
-    "เป็นของ process 1.0",
-    "ไม่ใช่รูปแบบที่ใช้"
+    "มี input อยู่",
+    "ถูก: มีเข้าแต่ไม่มีออก",
+    "ไม่ใช่เรื่อง input ไม่พอ",
+    "ผิด"
+   ],
+   "code": "[D1 Records] --old records--> (4.0 Archive Records)\n(ไม่มีลูกศรออกจาก 4.0)"
+  },
+  {
+   "q": "flow ด้านล่างผิดหลักใด",
+   "c": [
+    "Black hole",
+    "Entity → Entity",
+    "Store → Store",
+    "ไม่ผิด"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่เกี่ยวกับ process",
+    "ถูก: entity คุยกันตรงๆ ไม่วาดใน DFD",
+    "ไม่มี store",
+    "ผิด"
+   ],
+   "code": "Customer --purchase order--> Supplier"
+  },
+  {
+   "q": "flow ด้านล่างผิดหลักใด และควรแก้อย่างไร",
+   "c": [
+    "ไม่ผิด",
+    "Entity ↔ Store ต้องเพิ่ม process คั่นกลาง",
+    "Miracle ต้องลบ",
+    "Gray hole ต้องเพิ่ม input"
+   ],
+   "a": 1,
+   "why": [
+    "ผิด",
+    "ถูก: entity เขียน store ตรงไม่ได้",
+    "ไม่เกี่ยว",
+    "ไม่เกี่ยว"
+   ],
+   "code": "Registrar Staff --new student--> [D1 Students]"
+  },
+  {
+   "q": "process ด้านล่างผิดแบบใด",
+   "c": [
+    "Black hole",
+    "Miracle",
+    "Gray hole",
+    "ไม่ผิด"
+   ],
+   "a": 2,
+   "why": [
+    "มี output",
+    "มี input",
+    "ถูก: ไม่มีชั่วโมงทำงานหรืออัตราค่าจ้างเข้ามา จะคำนวณเงินเดือนไม่ได้",
+    "input ไม่พอ"
+   ],
+   "code": "Employee --employee ID--> (5.0 Calculate Pay)\n(5.0) --paycheck--> Employee"
+  },
+  {
+   "q": "Level 0 มี process 3.0 ส่ง 'shipment' และ 'tracking number' ออก แต่ Level 1 ของ 3.0 ส่ง 'shipment', 'tracking number' และ 'delivery date' ออก เป็นปัญหาอะไร",
+   "c": [
+    "Black hole",
+    "Unbalanced",
+    "Store → Store",
+    "ไม่ผิด"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่เกี่ยว",
+    "ถูก: ลูกมี output ข้ามขอบที่แม่ไม่มี",
+    "ไม่เกี่ยว",
+    "ผิด"
    ]
   },
+  {
+   "q": "ข้อใดเป็นข้อผิดพลาดของการตั้งชื่อ",
+   "c": [
+    "1.0 Validate Order",
+    "2.0 Report",
+    "D1 Customers",
+    "order details"
+   ],
+   "a": 1,
+   "why": [
+    "ถูกหลัก กริยา + กรรม",
+    "ถูก: process ต้องเป็นการกระทำ เช่น Generate Report",
+    "ชื่อ store เป็นคำนามถูกแล้ว",
+    "ชื่อ flow เป็นคำนามถูกแล้ว"
+   ]
+  },
+  {
+   "q": "ข้อใดเป็น data flow ที่ถูกต้อง",
+   "c": [
+    "[D1 Menu] --> [D2 Orders]",
+    "Chef --> Waiter",
+    "(1.0 Take Order) --> (2.0 Calculate Bill)",
+    "Customer --> [D2 Orders]"
+   ],
+   "a": 2,
+   "why": [
+    "store → store ผิด",
+    "entity → entity ผิด",
+    "ถูก: process ไป process ได้",
+    "entity → store ผิด"
+   ]
+  },
+  {
+   "q": "เมื่อตอบข้อสอบ 'หาจุดผิดใน DFD' ควรเขียนอะไรให้ครบ",
+   "c": [
+    "แค่วงกลมจุดผิด",
+    "ตำแหน่ง ชื่อข้อผิดพลาด และวิธีแก้",
+    "วาดแผนภาพใหม่ทั้งหมดเท่านั้น",
+    "จำนวนจุดผิด"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่พอ ผู้ตรวจไม่รู้ว่าเราเข้าใจ",
+    "ถูก: บอกว่าผิดตรงไหน ผิดเพราะอะไร แก้อย่างไร",
+    "ไม่จำเป็นเสมอ",
+    "ไม่พอ"
+   ]
+  }
+ ],
+ "sel-q2c": [
   {
    "q": "คำสั่งใดนำไฟล์ที่แก้แล้วเข้า staging area",
    "c": [
@@ -677,6 +1170,74 @@
     "ไม่ใช่",
     "ไม่เฉพาะไฟล์และไม่ติดตามการเปลี่ยนชื่อ"
    ]
+  },
+  {
+   "q": "git status แสดง 'Changes not staged for commit: modified: se.txt' ขั้นต่อไปควรเป็นอะไร",
+   "c": [
+    "git commit",
+    "git add se.txt",
+    "git push",
+    "git init"
+   ],
+   "a": 1,
+   "why": [
+    "ต้อง stage ก่อน",
+    "ถูก: modified → add → staged",
+    "ยังไม่ได้ commit",
+    "repo มีอยู่แล้ว"
+   ],
+   "code": "$ git status\nChanges not staged for commit:\n        modified:   se.txt"
+  },
+  {
+   "q": "จากผล git branch ด้านล่าง ตอนนี้อยู่ branch ไหน",
+   "c": [
+    "dev_kong",
+    "master",
+    "ทั้งสอง",
+    "ไม่มี"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่มี * หน้า",
+    "ถูก: * อยู่หน้า branch ปัจจุบัน",
+    "อยู่ได้ทีละ branch",
+    "มี"
+   ],
+   "code": "$ git branch\n  dev_kong\n* master"
+  },
+  {
+   "q": "git push ได้ผลด้านล่าง ควรทำอย่างไร",
+   "c": [
+    "git push --force ทุกครั้ง",
+    "git pull ก่อน แล้วค่อย push",
+    "git init ใหม่",
+    "ลบ repo"
+   ],
+   "a": 1,
+   "why": [
+    "ไม่ใช่วิธีที่สอน และเสี่ยงทับงานคนอื่น",
+    "ถูก: remote มีของใหม่ที่ local ยังไม่มี",
+    "ไม่เกี่ยว",
+    "ไม่เกี่ยว"
+   ],
+   "code": "$ git push\n ! [rejected]        master -> master (fetch first)"
+  },
+  {
+   "q": "'nothing to commit, working tree clean' หมายความว่า",
+   "c": [
+    "ยังไม่ได้ git init",
+    "ไม่มีไฟล์ที่แก้หรือ stage ค้าง ทุกอย่าง commit แล้ว",
+    "มีไฟล์ untracked",
+    "push แล้วแน่นอน"
+   ],
+   "a": 1,
+   "why": [
+    "ถ้าไม่ init จะขึ้น not a git repository",
+    "ถูก",
+    "ถ้ามีจะแสดง Untracked files",
+    "ไม่ได้บอกสถานะ remote"
+   ],
+   "code": "$ git status\nnothing to commit, working tree clean"
   }
  ]
 }
